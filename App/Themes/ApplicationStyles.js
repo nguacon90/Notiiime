@@ -24,13 +24,16 @@ const ApplicationStyles = {
       backgroundColor: Colors.transparent
     },
     section: {
-      margin: Metrics.section,
+      marginTop: Metrics.section,
+      marginBottom: Metrics.section,
+      marginLeft: Metrics.baseMargin,
+      marginRight: Metrics.baseMargin,
       padding: Metrics.baseMargin
     },
     sectionText: {
       ...Fonts.normal,
       paddingVertical: Metrics.doubleBaseMargin,
-      color: Colors.snow,
+      color: Colors.black,
       marginVertical: Metrics.smallMargin,
       textAlign: 'center'
     },

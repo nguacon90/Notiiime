@@ -15,8 +15,8 @@ class NavigationRouter extends Component {
     return (
       <Router>
           <Scene key='drawerChildrenWrapper' navigationBarStyle={Styles.navBar} titleStyle={Styles.title} leftButtonIconStyle={Styles.leftButton} rightButtonTextStyle={Styles.rightButton}>
-              <Scene initial key='launchScreen' component={LaunchScreen} title='Home Page' />
-              <Scene key='notiiimeHome' component={NotiMeHome} title="Notiii me"/>
+              <Scene initial key='homeScreen' component={LaunchScreen} title='Home Page' />
+              <Scene key='notiiimeHome' component={NotiMeHome} title="Noti mới"/>
           </Scene>
       </Router>
     )

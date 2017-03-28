@@ -1,7 +1,8 @@
 const type = {
   base: 'Avenir-Book',
   bold: 'Avenir-Black',
-  emphasis: 'HelveticaNeue-Italic'
+  emphasis: 'HelveticaNeue-Italic',
+  Roboto: 'Roboto'
 }
 
 const size = {
@@ -11,11 +12,18 @@ const size = {
   h4: 26,
   h5: 20,
   h6: 19,
+  label: 16,
   input: 18,
   regular: 17,
   medium: 14,
   small: 12,
   tiny: 8.5
+}
+
+const weight = {
+  light: "200",
+  normal: "300",
+  bold: "600"
 }
 
 const style = {
@@ -56,6 +64,7 @@ const style = {
 export default {
   type,
   size,
-  style
+  style,
+    weight
 }
 
