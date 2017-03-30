@@ -20,15 +20,15 @@ const ApplicationStyles = {
     },
     container: {
       flex: 1,
-      paddingTop: Metrics.baseMargin,
+      paddingTop: Metrics.doubleBaseMargin,
       backgroundColor: Colors.transparent
     },
     section: {
       marginTop: Metrics.section,
       marginBottom: Metrics.section,
-      marginLeft: Metrics.baseMargin,
-      marginRight: Metrics.baseMargin,
-      padding: Metrics.baseMargin
+      // marginLeft: Metrics.smallMargin,
+      marginRight: Metrics.smallMargin,
+      padding: Metrics.smallMargin
     },
     sectionText: {
       ...Fonts.normal,

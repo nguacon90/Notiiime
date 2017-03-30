@@ -21,18 +21,17 @@ export default StyleSheet.create({
         fontWeight: Fonts.weight.light,
         width: Metrics.widths.medium,
         fontFamily: Fonts.type.Roboto,
-        borderWidth: 0
+        borderWidth: 0,
     },
     containerSelect: {
-        flex: 1,
-        flexDirection:'row',
-        flexWrap:'wrap',
-        alignItems: 'flex-start',
-        marginLeft: Metrics.widths.small,
-        justifyContent: 'center'
+        marginLeft: 0,
+
     },
     containerInput: {
         borderBottomColor: Colors.background,
+    },
+    gridContainer: {
+        marginLeft: 10
     },
 
     labelText: {
@@ -47,7 +46,16 @@ export default StyleSheet.create({
         fontSize: Fonts.size.label,
         fontFamily: Fonts.type.Roboto,
         fontWeight: Fonts.weight.light,
-        marginTop: Metrics.baseMargin,
+        marginTop: Metrics.mediumMargin,
         width: Metrics.widths.normal,
+        marginLeft: 2
+    },
+    rowContainer: {
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.text,
+        marginLeft: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
+        justifyContent: 'flex-start'
     }
 })
