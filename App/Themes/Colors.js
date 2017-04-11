@@ -23,7 +23,12 @@ const colors = {
     banner: '#5F3E63',
     text: '#e2dae5',
     black: '#333333',
-    defaultText: '#18BA9C'
+    defaultText: '#18BA9C',
+    increaseColor: '#17e012',
+    decreaseColor: '#ff0000',
+    floorColor: '#00b5ff',
+    ceilingColor: '#ff00ff',
+    basicColor: '#fc0'
 }
 
 export default colors

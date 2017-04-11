@@ -27,6 +27,7 @@ const metrics = {
   },
   heights: {
     normal: 30,
+      medium: 40
   },
   icons: {
     tiny: 15,

@@ -9,7 +9,9 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
-      backgroundColor: Colors.transparent
+      backgroundColor: Colors.transparent,
+        padding: 0,
+        margin: 0
     },
     backgroundImage: {
       position: 'absolute',
@@ -21,14 +23,15 @@ const ApplicationStyles = {
     container: {
       flex: 1,
       paddingTop: Metrics.doubleBaseMargin,
-      backgroundColor: Colors.transparent
+      backgroundColor: Colors.transparent,
+        paddingLeft: 0
     },
     section: {
       marginTop: Metrics.section,
       marginBottom: Metrics.section,
-      // marginLeft: Metrics.smallMargin,
       marginRight: Metrics.smallMargin,
-      padding: Metrics.smallMargin
+      paddingTop: Metrics.smallMargin,
+        marginLeft: 1
     },
     sectionText: {
       ...Fonts.normal,
@@ -77,7 +80,23 @@ const ApplicationStyles = {
     borderColor: Colors.ember,
     alignItems: 'center',
     textAlign: 'center'
-  }
+  },
+
+    autocompleteView: {
+        backgroundColor: Colors.background,
+    },
+    defaultText: {
+        height: Metrics.heights.medium,
+        color: Colors.snow,
+        paddingLeft: Metrics.doubleBaseMargin,
+        paddingRight: Metrics.doubleBaseMargin,
+        paddingTop: Metrics.baseMargin,
+        paddingBottom: Metrics.baseMargin,
+        borderRightWidth: 1,
+        borderColor: Colors.snow,
+        fontSize: Fonts.size.medium,
+        lineHeight: Metrics.heights.small
+    }
 }
 
 export default ApplicationStyles

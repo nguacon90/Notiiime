@@ -22,6 +22,8 @@ export default StyleSheet.create({
         width: Metrics.widths.medium,
         fontFamily: Fonts.type.Roboto,
         borderWidth: 0,
+        marginLeft: 0,
+        marginRight: 0,
     },
     containerSelect: {
         marginLeft: 0,
@@ -29,9 +31,12 @@ export default StyleSheet.create({
     },
     containerInput: {
         borderBottomColor: Colors.background,
+        marginLeft: 5,
+        paddingLeft: 0,
     },
     gridContainer: {
-        marginLeft: 10
+        marginLeft: 0,
+        marginRight: 1
     },
 
     labelText: {
@@ -39,7 +44,8 @@ export default StyleSheet.create({
         fontSize: Fonts.size.label,
         fontFamily: Fonts.type.Roboto,
         fontWeight: Fonts.weight.light,
-        marginTop: Metrics.mediumMargin
+        marginTop: Metrics.mediumMargin,
+        marginLeft: 0
     },
     labelSmall: {
         color: Colors.defaultText,
@@ -53,7 +59,7 @@ export default StyleSheet.create({
     rowContainer: {
         borderBottomWidth: 1,
         borderBottomColor: Colors.text,
-        marginLeft: 15,
+        marginLeft: 5,
         paddingTop: 10,
         paddingBottom: 10,
         justifyContent: 'flex-start'
