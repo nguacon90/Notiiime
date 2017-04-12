@@ -1,4 +1,5 @@
 import apisauce from 'apisauce'
+import {Client, Message} from 'react-native-paho-mqtt'
 
 const messageUnmashaller = () => {
     return {
@@ -188,9 +189,67 @@ const finfoService = (baseURL = 'https://finfoapi-hn.vndirect.com.vn/') => {
     }
 }
 
+const myStorage = {
+    setItem: (key, item) => {
+        myStorage[key] = item;
+    },
+    getItem: (key) => myStorage[key],
+    removeItem: (key) => {
+        delete myStorage[key];
+    },
+};
+
+const clientMQTT = (clientId, signal, callbackSuccess, callbackError) => {
+    var client = new Client({ uri: 'ws://notiii.com:1884/ws', clientId: clientId, storage: myStorage });
+
+    // set event handlers
+    client.on('connectionLost', (responseObject) => {
+        if (responseObject.errorCode !== 0) {
+            if(typeof  callbackError == 'function') {
+                callbackError(responseObject.errorMessage);
+            } else {
+                console.log(responseObject.errorMessage);
+            }
+        }
+    });
+
+    client.on('messageReceived', (message) => {
+        if(typeof  callbackSuccess == 'function') {
+            callbackSuccess(message.payloadString);
+        } else {
+            console.log(message.payloadMessage);
+        }
+    });
+
+    const  start = () => {
+        client.connect()
+        .then(() => {
+            // Once a connection has been made, make a subscription and send a message.
+            console.log('onConnect');
+            return client.subscribe(signal);
+        })
+        .catch((responseObject) => {
+            if (responseObject.errorCode !== 0) {
+                if(typeof  callbackError == 'function') {
+                    callbackError(responseObject.errorMessage);
+                } else {
+                    console.log('onConnectionLost:' + responseObject.errorMessage);
+                }
+            }
+        })
+    }
+
+    return {
+        start
+    }
+}
+
+
+
 // let's return back our create method as the default.
 export default {
     finfoService,
     priceService,
-    messageUnmashaller
+    messageUnmashaller,
+    clientMQTT
 }

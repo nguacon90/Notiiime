@@ -22,7 +22,6 @@ class LoginFacebook extends Component {
               if (error) {
                 alert("login has error: " + result.error);
               } else if (result.isCancelled) {
-                console.warn("login is cancelled.");
               } else {
                 AccessToken.getCurrentAccessToken().then(
                   (data) => {
@@ -35,7 +34,8 @@ class LoginFacebook extends Component {
                           AsyncStorage.setItem(Constants.accessToken, JSON.stringify({
                               userID: data.userID,
                               accessToken: token,
-                              name: res.name
+                              name: res.name,
+                              expiredTime: data.expirationTime
                           }), () => {
                               Actions.homeScreen()
                               Actions.refresh({'title': res.name});
