@@ -1,6 +1,7 @@
 package com.notiiime;
 
 import android.app.Application;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.CallbackManager;
@@ -32,7 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
               new FBSDKPackage(mCallbackManager),
-              new VectorIconsPackage()
+              new VectorIconsPackage(),
+              new RNDeviceInfo()
       );
     }
   };

@@ -1,5 +1,6 @@
 import apisauce from 'apisauce'
 import {Client, Message} from 'react-native-paho-mqtt'
+import Constants from '../Config/Constants'
 
 const messageUnmashaller = () => {
     return {
@@ -150,7 +151,7 @@ const messageUnmashaller = () => {
     }
 };
 
-const priceService = (baseURL = 'https://price-hn04.vndirect.com.vn/priceservice/') => {
+const priceService = (baseURL = Constants.priceServer) => {
     const api = apisauce.create({
         baseURL,
         headers: {
@@ -170,7 +171,7 @@ const priceService = (baseURL = 'https://price-hn04.vndirect.com.vn/priceservice
 }
 
 
-const finfoService = (baseURL = 'https://finfoapi-hn.vndirect.com.vn/') => {
+const finfoService = (baseURL = Constants.finfoServer) => {
     const api = apisauce.create({
         baseURL,
         headers: {
@@ -186,6 +187,27 @@ const finfoService = (baseURL = 'https://finfoapi-hn.vndirect.com.vn/') => {
 
     return {
         getStocks
+    }
+}
+
+const notiService = (baseURL = Constants.notiiServer) => {
+    const api = apisauce.create({
+        baseURL,
+        headers: {
+            'Cache-Control': 'no-cache'
+        },
+        timeout: 30000
+    })
+    if (__DEV__ && console.tron) {
+        api.addMonitor(console.tron.apisauce)
+    }
+
+    const register = (notiData) => {
+        var path = "users/{userId}/notiii/new_notiii_requests".replace('{userId}', Constants.deviceId);
+        return api.post(path, notiData);
+    }
+    return {
+        register
     }
 }
 
@@ -250,6 +272,7 @@ const clientMQTT = (clientId, signal, callbackSuccess, callbackError) => {
 export default {
     finfoService,
     priceService,
+    notiService,
     messageUnmashaller,
     clientMQTT
 }

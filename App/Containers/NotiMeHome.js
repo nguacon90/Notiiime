@@ -110,14 +110,8 @@ export default class NotiMeHome extends React.Component {
 
     createNotiiime() {
         var notiiData = {
-            notiiiID: '',
-            userID: '',
-            createdDate: new Date().getTime(),
             frequencyOfReceipt: this.state.ratio,
-            updateDate: new Date().getTime(),
             reason: this.state.note,
-            signalID: '',
-            expiry: '',
             terms: [
                 {
                     type: 'STOCK',
@@ -127,9 +121,11 @@ export default class NotiMeHome extends React.Component {
                     value: this.state.value * 1000
                 }
             ]
-        }
+        };
 
-        console.log(notiiData)
+        vndsService.notiService().register(notiiData).then((res) => {
+            console.log(res)
+        }).then(console.log)
     }
 
     render () {
