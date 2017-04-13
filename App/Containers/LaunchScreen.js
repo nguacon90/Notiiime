@@ -12,14 +12,16 @@ const {
 
 
 export default class LaunchScreen extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
     }
     componentDidMount() {
+        console.log(this.props)
         this.refreshTitle().done()
     }
 
     async refreshTitle() {
+        this.props.showLoading(true);
         var userInfo = await AsyncStorage.getItem(Constants.accessToken)
         if(typeof userInfo === 'string') {
             var userModel = JSON.parse(userInfo);
@@ -35,6 +37,7 @@ export default class LaunchScreen extends React.Component {
                 await AsyncStorage.removeItem(Constants.accessToken);
             }
         }
+        this.props.showLoading(false);
     }
 
     render () {
@@ -43,12 +46,9 @@ export default class LaunchScreen extends React.Component {
             <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
             <ScrollView style={styles.container}>
               <View style={styles.section} >
-                <Text style={styles.sectionText} onPress={() => Actions.notiiimeHome()}>
-                  {'Go to notiii.me.'}
-                </Text>
               </View>
               <View style={styles.centered}>
-                <Login />
+                <Login showLoading={ this.props.showLoading.bind(this)}/>
               </View>
             </ScrollView>
           </View>

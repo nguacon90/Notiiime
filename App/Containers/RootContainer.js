@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import {SideMenu, List, ListItem} from 'react-native-elements'
-import { View, StatusBar, Text } from 'react-native'
+import { View, StatusBar, Text, ScrollView} from 'react-native'
+import Spinner from 'react-native-loading-spinner-overlay';
 import NavigationRouter from '../Navigation/NavigationRouter'
+import BottomNavigation from '../Navigation/BottomNavigation'
 import MenuComp from './Menu'
 import styles from './Styles/RootContainerStyles'
+import Colors from '../Themes/Colors'
 
 class RootContainer extends Component {
     constructor () {
         super()
         this.state = {
-            isOpen: false
+            isOpen: false,
+            isLoading: false,
+            visibleBottomMenu: true
         }
         this.toggleSideMenu = this.toggleSideMenu.bind(this)
     }
@@ -26,16 +31,33 @@ class RootContainer extends Component {
         })
     }
 
+    showBottomMenu(isShow) {
+        this.setState({
+            visibleBottomMenu: isShow
+        })
+    }
+
+    showLoading (isLoading) {
+        this.setState({
+            isLoading: isLoading
+        })
+    }
+
     render() {
-        const menu = <MenuComp />
+        const menu = <MenuComp toggleSideMenu={this.toggleSideMenu}/>
         return (
             <View style={styles.applicationView}>
+                <Spinner visible={this.state.isLoading} textContent={"Vui lòng đợi..."}
+                         textStyle={{"color": Colors.silver}} />
                 <SideMenu menuPosition={'left'}
                     isOpen={this.state.isOpen}
                     onChange={this.onSideMenuChange.bind(this)}
                     menu={menu}>
                     <StatusBar barStyle='light-content'/>
-                    <NavigationRouter toggleSideMenu={this.toggleSideMenu.bind(this)} />
+                    <NavigationRouter showLoading={this.showLoading.bind(this)} toggleSideMenu={this.toggleSideMenu.bind(this)} />
+                    <BottomNavigation showBottomMenu={this.showBottomMenu.bind(this)}
+                                      visibility={this.state.visibleBottomMenu}
+                                      toggleSideMenu={this.toggleSideMenu.bind(this)}/>
                 </SideMenu>
             </View>
         )

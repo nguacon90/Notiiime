@@ -12,7 +12,12 @@ const {
 } = FBSDK;
 
 class LoginFacebook extends Component {
+    constructor(props) {
+        super(props)
+    }
+
     render() {
+        const self = this;
         return (
             <View>
                 <LoginButton style={fbStyles}

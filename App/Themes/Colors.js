@@ -28,7 +28,7 @@ const colors = {
     decreaseColor: '#ff0000',
     floorColor: '#00b5ff',
     ceilingColor: '#ff00ff',
-    basicColor: '#fc0'
+    basicColor: '#fc0',
 }
 
 export default colors

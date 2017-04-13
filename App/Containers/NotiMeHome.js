@@ -1,16 +1,22 @@
 import React from "react";
-import {Image, ScrollView, View, Text, Picker,StyleSheet, Keyboard} from "react-native";
+import {Image, ScrollView, View, Text, Picker,StyleSheet, Keyboard, AsyncStorage} from "react-native";
 import { Metrics, ApplicationStyles, Colors, Fonts, Images } from '../Themes/'
 import styles from "./Styles/LaunchScreenStyles";
 import {Col, FormInput, FormLabel, Grid, Row, Icon, Button} from "react-native-elements";
 const Item = Picker.Item;
 import vndsService from "../Services/VndsService"
 import AutoComplete from './AutoComplete'
+import Constants from '../Config/Constants'
+const FBSDK = require('react-native-fbsdk');
+const {
+    LoginManager,
+} = FBSDK;
 
 export default class NotiMeHome extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
+            userId: '',
             symbol: '',
             matchPrice: '',
             priceColor: Colors.transparent,
@@ -25,6 +31,7 @@ export default class NotiMeHome extends React.Component {
         };
     }
     componentDidMount() {
+        this.getUserId();
         if(this.state.stocks.length == 0) {
             var self = this;
             vndsService.finfoService().getStocks().then((res) => {
@@ -35,17 +42,22 @@ export default class NotiMeHome extends React.Component {
         }
     }
 
+    async getUserId() {
+        var userInfo = await AsyncStorage.getItem(Constants.accessToken)
+        if (typeof userInfo === 'string') {
+            var userModel = JSON.parse(userInfo);
+            this.setState({
+                userId: userModel.userID
+            })
+        }
+    }
+
     autocomplete(text) {
         this.setState({
             isShowAutoComplete: true
         });
 
-        var data = [];
-        this.state.stocks.forEach(function(stock, index){
-            if(stock.symbol.toUpperCase().startsWith(text.toUpperCase())) {
-                data.push(stock);
-            }
-        });
+        var data = this.state.stocks.filter(stock => stock.symbol.toUpperCase().startsWith(text.toUpperCase()));
 
         this.setState({
             data: data,
@@ -109,6 +121,13 @@ export default class NotiMeHome extends React.Component {
     }
 
     createNotiiime() {
+        if(this.state.userId == '' || typeof (this.state.userId) == 'undefined') {
+            alert('Bạn cần login để sử dụng tính năng này')
+            return;
+        }
+
+        this.props.showLoading(true);
+        var self = this;
         var notiiData = {
             frequencyOfReceipt: this.state.ratio,
             reason: this.state.note,
@@ -124,8 +143,11 @@ export default class NotiMeHome extends React.Component {
         };
 
         vndsService.notiService().register(notiiData).then((res) => {
+            self.props.showLoading(false);
             console.log(res)
-        }).then(console.log)
+        }).then((err) => {
+            self.props.showLoading(false);
+        })
     }
 
     render () {

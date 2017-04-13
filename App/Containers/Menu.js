@@ -4,8 +4,8 @@ import {List, ListItem} from 'react-native-elements'
 import {Actions} from 'react-native-router-flux'
 
 class MenuComp extends Component {
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
     }
 
     render() {
@@ -14,7 +14,7 @@ class MenuComp extends Component {
                 <List containerStyle={{marginBottom: 20}}>
                     <ListItem
                         roundAvatar
-                        onPress={() => {Actions.notiiimeHome();}}
+                        onPress={() => {Actions.notiiimeHome(); this.props.toggleSideMenu();}}
                         title="Notiii me"
                     />
                 </List>

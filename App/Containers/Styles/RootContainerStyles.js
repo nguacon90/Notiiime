@@ -20,5 +20,13 @@ export default StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: 'center'
+  },
+  centering: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 8,
+  },
+  lightBlue: {
+    color: Colors.lightblue
   }
 })

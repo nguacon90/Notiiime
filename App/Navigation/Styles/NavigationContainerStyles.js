@@ -1,4 +1,4 @@
-import {Colors} from '../../Themes/'
+import { Metrics, ApplicationStyles, Colors, Fonts } from '../../Themes/'
 
 export default {
   container: {
@@ -15,5 +15,11 @@ export default {
   },
   rightButton: {
     color: Colors.snow
-  }
+  },
+    bottomMenu: {
+        backgroundColor: Colors.background,
+    },
+    defaultText: {
+      color: Colors.snow,
+    }
 }
