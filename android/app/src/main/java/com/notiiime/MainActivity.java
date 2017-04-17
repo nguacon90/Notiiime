@@ -2,6 +2,8 @@ package com.notiiime;
 
 import com.facebook.react.ReactActivity;
 import android.content.Intent;
+import com.cboy.rn.splashscreen.SplashScreen;
+import android.os.Bundle;
 
 public class MainActivity extends ReactActivity {
     /**
@@ -11,6 +13,12 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "notiiime";
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.show(this);  // here
+        super.onCreate(savedInstanceState);
     }
 
     @Override

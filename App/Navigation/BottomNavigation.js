@@ -11,9 +11,9 @@ class BottomNavigation extends Component {
         super(props);
         this.state = {
             page: 'noti',
-            menu: Colors.snow,
-            noti: Colors.snow,
-            market: Colors.snow,
+            screener: Colors.black,
+            noti: Colors.background,
+            watchlist: Colors.black,
             home: Colors.black,
         }
     }
@@ -31,20 +31,15 @@ class BottomNavigation extends Component {
 
     onSelectedTab(el) {
         var name = el.props.name;
-        if(name === 'menu') {
-            this.props.toggleSideMenu();
-            return;
-        } else if(name === 'noti') {
-            Actions.notiiimeHome();
-        } else if(name === 'home') {
-            Actions.homeScreen();
+        if(name === 'noti') {
+            Actions.notime();
         }
 
         this.setState({
             page: name,
-            home: name === 'home' ? Colors.black : Colors.snow,
-            noti: name === 'noti' ? Colors.black : Colors.snow,
-            market: name === 'market' ? Colors.black : Colors.snow,
+            home: name === 'home' ? Colors.background : Colors.black,
+            noti: name === 'noti' ? Colors.background : Colors.black,
+            market: name === 'market' ? Colors.background : Colors.black,
         });
     }
 
@@ -53,21 +48,17 @@ class BottomNavigation extends Component {
             return (
                 <Tabs selected={this.state.page} style={styles.bottomMenu}
                       selectedStyle={{}} onSelect={el=> {this.onSelectedTab(el)}}>
-                    <View name="menu">
-                        <Icon containerStyle={{}} color={this.state.menu} name='align-justify' type="font-awesome"></Icon>
-                        <Text style={{color: this.state.menu}}>Menu</Text>
-                    </View>
-                    <View name="home">
-                        <Icon containerStyle={{}} color={this.state.home} name='newspaper-o' type="font-awesome"></Icon>
-                        <Text style={{color: this.state.home}}>Trang chủ</Text>
-                    </View>
                     <View name="noti">
-                        <Icon containerStyle={{}} color={this.state.noti} name='bell-o' type="font-awesome"></Icon>
+                        <Icon containerStyle={{}} color={this.state.noti} name='signal' type="font-awesome"></Icon>
                         <Text style={{color: this.state.noti}}>Notiii me</Text>
                     </View>
-                    <View name="market">
-                        <Icon containerStyle={{}} color={this.state.market} name='line-chart'  type="font-awesome"></Icon>
-                        <Text style={{color: this.state.market}}>Thị trường</Text>
+                    <View name="watchlist">
+                        <Icon containerStyle={{}} color={this.state.watchlist} name='eye'  type="font-awesome"></Icon>
+                        <Text style={{color: this.state.watchlist}}>Watch list</Text>
+                    </View>
+                    <View name="screener">
+                        <Icon containerStyle={{}} color={this.state.screener} name='filter'  type="font-awesome"></Icon>
+                        <Text style={{color: this.state.screener}}>Lọc Cổ Phiếu</Text>
                     </View>
                 </Tabs>
             )

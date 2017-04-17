@@ -4,7 +4,7 @@ import { View, StatusBar, Text, ScrollView} from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 import NavigationRouter from '../Navigation/NavigationRouter'
 import BottomNavigation from '../Navigation/BottomNavigation'
-import MenuComp from './Menu'
+import MenuComp from '../Components/Menu/Menu'
 import styles from './Styles/RootContainerStyles'
 import Colors from '../Themes/Colors'
 
@@ -54,7 +54,8 @@ class RootContainer extends Component {
                     onChange={this.onSideMenuChange.bind(this)}
                     menu={menu}>
                     <StatusBar barStyle='light-content'/>
-                    <NavigationRouter showLoading={this.showLoading.bind(this)} toggleSideMenu={this.toggleSideMenu.bind(this)} />
+                    <NavigationRouter showLoading={this.showLoading.bind(this)}
+                                      toggleSideMenu={this.toggleSideMenu.bind(this)} showBottomMenu={this.showBottomMenu.bind(this)} />
                     <BottomNavigation showBottomMenu={this.showBottomMenu.bind(this)}
                                       visibility={this.state.visibleBottomMenu}
                                       toggleSideMenu={this.toggleSideMenu.bind(this)}/>

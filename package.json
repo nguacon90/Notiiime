@@ -19,6 +19,7 @@
     "react-native-loading-spinner-overlay": "^0.4.4",
     "react-native-paho-mqtt": "0.0.8",
     "react-native-router-flux": "^3.38.0",
+    "react-native-splash-screen": "^2.0.0",
     "react-native-tabs": "^1.0.9",
     "react-native-vector-icons": "^4.0.0",
     "watchman": "^0.1.8"

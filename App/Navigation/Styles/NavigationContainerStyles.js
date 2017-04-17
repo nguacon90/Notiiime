@@ -11,13 +11,15 @@ export default {
     color: Colors.snow
   },
   leftButton: {
-    tintColor: Colors.snow
+    //color: Colors.snow
   },
   rightButton: {
-    color: Colors.snow
+    //color: Colors.snow
   },
     bottomMenu: {
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.lightBackground,
+        borderTopColor: Colors.steel,
+        borderTopWidth: 0.8
     },
     defaultText: {
       color: Colors.snow,

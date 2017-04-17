@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, AsyncStorage } from 'react-native'
 import {Actions} from 'react-native-router-flux'
-import Constants from '../Config/Constants'
-import fbStyles from './Styles/FacebookStyles'
+import Constants from '../../Config/Constants'
+import fbStyles from './FacebookStyles'
 const FBSDK = require('react-native-fbsdk');
 const {
     LoginButton,
@@ -38,12 +38,12 @@ class LoginFacebook extends Component {
                       }, (err, res) => {
                           AsyncStorage.setItem(Constants.accessToken, JSON.stringify({
                               userID: data.userID,
+                              loginVia: Constants.loginMethods.facebook,
                               accessToken: token,
                               name: res.name,
                               expiredTime: data.expirationTime
                           }), () => {
-                              Actions.homeScreen()
-                              Actions.refresh({'title': res.name});
+                              Actions.notime()
                           });
                       });
 
@@ -55,7 +55,6 @@ class LoginFacebook extends Component {
             }
           } onLogoutFinished={async () => {
                 await AsyncStorage.removeItem(Constants.accessToken, function() {
-                    Actions.refresh({'title' : 'Home page'})
                 })
           }}/>
             </View>

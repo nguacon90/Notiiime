@@ -5,6 +5,7 @@ React-native application to notify stock or market events realtime.
 - font icons: https://github.com/oblador/react-native-vector-icons
 - login facebook using fbsdk: https://github.com/facebook/react-native-fbsdk
 - bottom navigation: https://www.npmjs.com/package/react-native-bottom-navigation
+- splash screen: https://github.com/crazycodeboy/react-native-splash-screen
 ## Development environment
 - reactive-native: 0.42.3
 - react: 15.4.2

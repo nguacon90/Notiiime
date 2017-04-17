@@ -1,5 +1,6 @@
 const colors = {
     background: '#18BA9C',
+    lightBackground: '#E9F5F1',
     clear: 'rgba(0,0,0,0)',
     facebook: '#3b5998',
     transparent: 'rgba(0,0,0,0)',
@@ -28,7 +29,7 @@ const colors = {
     decreaseColor: '#ff0000',
     floorColor: '#00b5ff',
     ceilingColor: '#ff00ff',
-    basicColor: '#fc0',
+    basicColor: '#ffb809',
 }
 
 export default colors

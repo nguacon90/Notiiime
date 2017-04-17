@@ -1,18 +1,22 @@
+/**
+ * Created by minh on 16/04/2017.
+ */
 import React from "react";
 import {Image, ScrollView, View, Text, Picker,StyleSheet, Keyboard, AsyncStorage} from "react-native";
-import { Metrics, ApplicationStyles, Colors, Fonts, Images } from '../Themes/'
-import styles from "./Styles/LaunchScreenStyles";
+import { Metrics, ApplicationStyles, Colors, Fonts, Images } from '../../Themes/'
+import styles from "../../Containers/Styles/LaunchScreenStyles";
 import {Col, FormInput, FormLabel, Grid, Row, Icon, Button} from "react-native-elements";
+import vndsService from "../../Services/VndsService"
+import AutoComplete from '../Autocomplete/AutoComplete'
+import Constants from '../../Config/Constants'
+import {Actions} from 'react-native-router-flux'
 const Item = Picker.Item;
-import vndsService from "../Services/VndsService"
-import AutoComplete from './AutoComplete'
-import Constants from '../Config/Constants'
 const FBSDK = require('react-native-fbsdk');
 const {
     LoginManager,
 } = FBSDK;
 
-export default class NotiMeHome extends React.Component {
+export default class NotiMe extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -116,7 +120,7 @@ export default class NotiMeHome extends React.Component {
         }
 
         if(matchPrice > basicPrice) {
-           return Colors.increaseColor;
+            return Colors.increaseColor;
         }
     }
 
@@ -131,6 +135,7 @@ export default class NotiMeHome extends React.Component {
         var notiiData = {
             frequencyOfReceipt: this.state.ratio,
             reason: this.state.note,
+            userId: this.state.userId,
             terms: [
                 {
                     type: 'STOCK',
@@ -144,8 +149,14 @@ export default class NotiMeHome extends React.Component {
 
         vndsService.notiService().register(notiiData).then((res) => {
             self.props.showLoading(false);
-            console.log(res)
-        }).then((err) => {
+            if(res.ok) {
+                Actions.notime();
+            } else {
+                alert(res.problem);
+            }
+        })
+        .catch((err) =>{
+            alert(err);
             self.props.showLoading(false);
         })
     }
@@ -154,7 +165,6 @@ export default class NotiMeHome extends React.Component {
 
         return (
             <View style={styles.mainContainer}>
-                <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
                 <ScrollView style={styles.container}>
                     <View style={styles.section} >
                         <Grid containerStyle={styles.gridContainer}>
@@ -181,8 +191,8 @@ export default class NotiMeHome extends React.Component {
                             <Row containerStyle={styles.rowContainer}>
                                 <Col containerStyle={styles.containerSelect}>
                                     <Picker style={{width: 100}}
-                                        selectedValue={this.state.field}
-                                        onValueChange={this.onValueChange.bind(this, 'field')}>
+                                            selectedValue={this.state.field}
+                                            onValueChange={this.onValueChange.bind(this, 'field')}>
                                         <Item label="Giá" value="matchedPrice" />
                                     </Picker>
                                 </Col>

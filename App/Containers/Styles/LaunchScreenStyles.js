@@ -9,8 +9,37 @@ export default StyleSheet.create({
         width: Metrics.images.logo,
         resizeMode: 'contain'
     },
+    containerCenter: {
+        flex:1,
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    sectionCenter: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent:'center',
+        marginBottom: Metrics.doubleBaseMargin
+    },
+    btnDefault: {
+        width: Metrics.widths.large,
+        borderRadius: 5,
+        backgroundColor: Colors.background
+    },
+    iconNoti: {
+        color: Colors.basicColor
+    },
+    textNoti: {
+        color: Colors.defaultText,
+        fontSize: Fonts.size.h4,
+        marginLeft: Metrics.baseMargin
+    },
+    iconAddNoti: {
+        fontSize: Fonts.size.regular,
+        color: Colors.defaultText
+    },
     centered: {
-        alignItems: 'center'
+        textAlign: "center"
     },
     whiteColor: {
         color: Colors.text

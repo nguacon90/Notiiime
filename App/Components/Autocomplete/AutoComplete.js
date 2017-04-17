@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {View, Text, ScrollView,  TouchableHighlight, TouchableOpacity} from 'react-native'
-import appStyles from '../Themes/ApplicationStyles'
+import appStyles from '../../Themes/ApplicationStyles'
 
 class AutoComplete extends Component {
     constructor(props) {
