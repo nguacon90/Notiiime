@@ -42,6 +42,7 @@ class NavigationRouter extends Component {
               >
                   <Scene showLoading={this.props.showLoading.bind(this)}
                          showBottomMenu={this.props.showBottomMenu.bind(this)}
+                         renderMenuLogin={this.props.renderMenuLogin.bind(this)}
                          key='loginScreen' component={LoginScreen} initial
                          title='Đăng nhập' passProps={true} type={ActionConst.REPLACE}/>
 

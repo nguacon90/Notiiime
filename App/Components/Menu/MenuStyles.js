@@ -31,11 +31,14 @@ export default StyleSheet.create({
     item: {
         marginTop: 0,
         backgroundColor: Colors.lightBackground,
+        borderBottomWidth: 0.8,
+        borderBottomColor: Colors.background
     },
     itemTitle: {
         color: Colors.defaultText
     },
     listContainer: {
-        marginTop: 0
+        marginTop: 0,
+        borderBottomWidth: 0
     }
 })

@@ -49,7 +49,7 @@ export default class NotiMeHome extends React.Component {
                             <Icon iconStyle={styles.iconNoti} name="signal" type="font-awesome"/>
                             <Text style={styles.textNoti}>Notiii.me</Text>
                         </View>
-                        <LoginFacebook/>
+                        <LoginFacebook renderMenuLogin={this.props.renderMenuLogin.bind(this)}/>
                     </View>
                 </ScrollView>
             </View>

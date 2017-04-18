@@ -9,6 +9,10 @@ export default StyleSheet.create({
         width: Metrics.images.logo,
         resizeMode: 'contain'
     },
+    stockNotiContainer: {
+        marginLeft: Metrics.baseMargin,
+        marginRight: Metrics.baseMargin
+    },
     containerCenter: {
         flex:1,
         flexDirection:'row',
@@ -76,6 +80,13 @@ export default StyleSheet.create({
         marginTop: Metrics.mediumMargin,
         marginLeft: 0
     },
+    subtitleLabelText: {
+        color: Colors.black,
+        fontSize: Fonts.size.medium,
+        fontFamily: Fonts.type.Roboto,
+        fontWeight: Fonts.weight.light,
+        marginLeft: 0
+    },
     labelSmall: {
         color: Colors.defaultText,
         fontSize: Fonts.size.label,
@@ -92,5 +103,38 @@ export default StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
         justifyContent: 'flex-start'
+    },
+    tabBarWithNav: {
+        marginTop: Metrics.navBarHeight,
+        height: Metrics.heights.small
+    },
+    tabBarView: {
+        backgroundColor: Colors.lightBackground,
+    },
+    titleTextDefault: {
+        color: Colors.black,
+        fontSize: Fonts.size.regular,
+        paddingBottom: 7,
+        alignSelf: 'center'
+    },
+    selectedTitle: {
+        color: Colors.defaultText,
+        fontWeight: Fonts.weight.bold,
+        borderBottomColor: Colors.background,
+        borderBottomWidth: 0.8,
+        width: Metrics.widths.large
+    },
+    scenseTabContent: {
+        flex: 1,
+        flexDirection: 'row',
+        height: Metrics.screenHeight,
+    },
+    listViewRow: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: "center",
+        paddingTop: 5,
+        paddingBottom: 15,
     }
 })

@@ -15,9 +15,7 @@ class MenuComp extends Component {
         super(props);
         this.state = {
             title: 'Menu',
-            userInfo: null,
-            signInOut: 'Đăng nhập',
-            signInOutIcon: 'sign-in'
+            userInfo: null
         }
     }
 
@@ -43,9 +41,8 @@ class MenuComp extends Component {
                 this.setState({
                     title: userModel.name.toUpperCase(),
                     userInfo: userInfo,
-                    signInOut: 'Đăng xuất',
-                    signInOutIcon: 'sign-out'
-                })
+                });
+                this.props.renderMenuLogin(false);
             }
         }
     }
@@ -56,9 +53,8 @@ class MenuComp extends Component {
             await AsyncStorage.removeItem(Constants.accessToken);
             this.setState({
                 title: "Menu",
-                signInOut: 'Đăng nhập',
-                signInOutIcon: 'sign-in'
             })
+            this.props.renderMenuLogin(true);
             this.props.toggleSideMenu();
             Actions.loginScreen();
         }
@@ -78,9 +74,9 @@ class MenuComp extends Component {
                     />
 
                     <ListItem containerStyle={MenuStyles.item}
-                              leftIcon={{name: this.state.signInOutIcon, type:"font-awesome", size: 20, color: Colors.defaultText}}
+                              leftIcon={{name: this.props.loginIcon, type:"font-awesome", size: 20, color: Colors.defaultText}}
                               onPress={() => {this.doLoginOrLogout()}}
-                              title={this.state.signInOut} titleStyle={MenuStyles.itemTitle}
+                              title={this.props.loginText} titleStyle={MenuStyles.itemTitle}
                     />
                 </List>
             </View>

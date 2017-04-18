@@ -43,7 +43,8 @@ class LoginFacebook extends Component {
                               name: res.name,
                               expiredTime: data.expirationTime
                           }), () => {
-                              Actions.notime()
+                              Actions.notime();
+                              self.props.renderMenuLogin(false);
                           });
                       });
 

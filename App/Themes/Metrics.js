@@ -23,10 +23,11 @@ const metrics = {
     small: 30,
       normal: 80,
       medium: 100,
-      large: 250
+      large: 150,
   },
   heights: {
-    normal: 30,
+      small: 20,
+      normal: 30,
       medium: 40,
       large: 50
   },

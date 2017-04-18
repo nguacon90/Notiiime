@@ -14,9 +14,18 @@ class RootContainer extends Component {
         this.state = {
             isOpen: false,
             isLoading: false,
-            visibleBottomMenu: true
+            visibleBottomMenu: true,
+            loginIcon: 'sign-in',
+            loginText: 'Đăng nhập'
         }
         this.toggleSideMenu = this.toggleSideMenu.bind(this)
+    }
+
+    renderMenuLogin = (isLogin) => {
+        this.setState({
+            loginIcon: isLogin ? 'sign-in' : 'sign-out',
+            loginText: isLogin ? 'Đăng nhập': 'Đăng xuất'
+        });
     }
 
     onSideMenuChange (isOpen: boolean) {
@@ -44,7 +53,8 @@ class RootContainer extends Component {
     }
 
     render() {
-        const menu = <MenuComp toggleSideMenu={this.toggleSideMenu}/>
+        const menu = <MenuComp toggleSideMenu={this.toggleSideMenu} loginIcon={this.state.loginIcon}
+                        loginText={this.state.loginText} renderMenuLogin={this.renderMenuLogin.bind(this)}/>
         return (
             <View style={styles.applicationView}>
                 <Spinner visible={this.state.isLoading} textContent={"Vui lòng đợi..."}
@@ -55,7 +65,9 @@ class RootContainer extends Component {
                     menu={menu}>
                     <StatusBar barStyle='light-content'/>
                     <NavigationRouter showLoading={this.showLoading.bind(this)}
-                                      toggleSideMenu={this.toggleSideMenu.bind(this)} showBottomMenu={this.showBottomMenu.bind(this)} />
+                                      toggleSideMenu={this.toggleSideMenu.bind(this)}
+                                      showBottomMenu={this.showBottomMenu.bind(this)}
+                                      renderMenuLogin={this.renderMenuLogin.bind(this)}/>
                     <BottomNavigation showBottomMenu={this.showBottomMenu.bind(this)}
                                       visibility={this.state.visibleBottomMenu}
                                       toggleSideMenu={this.toggleSideMenu.bind(this)}/>
