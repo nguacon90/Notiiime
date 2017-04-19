@@ -12,6 +12,7 @@
     "react-native": "0.42.3",
     "react-native-autocomplete": "^0.3.0",
     "react-native-config": "^0.2.1",
+    "react-native-datepicker": "^1.4.7",
     "react-native-device-info": "^0.10.2",
     "react-native-drawer": "^2.3.0",
     "react-native-elements": "^0.10.2",

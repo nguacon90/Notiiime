@@ -8,13 +8,14 @@ import {Actions} from "react-native-router-flux";
 import Constants from "../../Config/Constants";
 import styles from '../../Containers/Styles/LaunchScreenStyles'
 import StockNoti from './StockNoti'
+import vndService from '../../Services/VndsService'
 
 export default class NotiMe extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             userId : '',
-            notiSetups: [{}],
+            notiSetups: [],
             selectedTab: 'stock'
         }
     }
@@ -37,12 +38,27 @@ export default class NotiMe extends React.Component {
     }
 
     loadNotiSetups() {
-        if(this.state.notiSetups.length == 0) {
-            Actions.emptyNoti();
-            this.props.showLoading(false);
-            return;
-        }
-        this.props.showLoading(false);
+        vndService.notiService().getNotiSetups(this.state.userId).then((res)=>{
+            if(res.ok) {
+                console.log(res);
+                if(res.data.length == 0) {
+                    Actions.emptyNoti();
+                    this.props.showLoading(false);
+                    return;
+                }
+
+                this.setState({
+                    notiSetups: res.data
+                });
+                this.props.showLoading(false);
+            } else {
+                alsert(res.problem);
+            }
+
+        }).catch((err) => {
+            alert(err);
+        });
+
     }
 
     changeTab (selectedTab) {
@@ -50,31 +66,35 @@ export default class NotiMe extends React.Component {
     }
 
     render () {
-        return (
-            <View style={styles.mainContainer}>
-                <ScrollView style={[styles.container]} contentContainerStyle={{flex:1}}>
-                    <View style={styles.tabBarWithNav}>
-                        <Tabs tabBarStyle={styles.tabBarView} sceneStyle={styles.scenseTabContent}>
-                            <Tab selectedTitleStyle={styles.selectedTitle}
-                                titleStyle={styles.titleTextDefault}
-                                selected={this.state.selectedTab === 'stock'}
-                                title={'Mã'}
-                                onPress={() => this.changeTab('stock')}>
-                                <StockNoti/>
-                            </Tab>
-                            <Tab selectedTitleStyle={styles.selectedTitle}
-                                titleStyle={styles.titleTextDefault}
-                                selected={this.state.selectedTab === 'market'}
-                                title={'Thị trường'}
-                                onPress={() => this.changeTab('market')}>
-                                <View style={{height: 100, flex: 1, flexDirection: "row"}}>
-                                    <Text>Tab 2</Text>
-                                </View>
-                            </Tab>
-                        </Tabs>
-                    </View>
-                </ScrollView>
-            </View>
-        )
+            if(this.state.notiSetups && this.state.notiSetups.length > 0) {
+                return (
+
+                <View style={styles.mainContainer}>
+                    <ScrollView style={[styles.container]} contentContainerStyle={{flex:1}}>
+                        <View style={styles.tabBarWithNav}>
+                            <Tabs tabBarStyle={styles.tabBarView} sceneStyle={styles.scenseTabContent}>
+                                <Tab selectedTitleStyle={styles.selectedTitle}
+                                    titleStyle={styles.titleTextDefault}
+                                    selected={this.state.selectedTab === 'stock'}
+                                    title={'Mã'}
+                                    onPress={() => this.changeTab('stock')}>
+                                    <StockNoti notiSetups={this.state.notiSetups}/>
+                                </Tab>
+                                <Tab selectedTitleStyle={styles.selectedTitle}
+                                    titleStyle={styles.titleTextDefault}
+                                    selected={this.state.selectedTab === 'market'}
+                                    title={'Thị trường'}
+                                    onPress={() => this.changeTab('market')}>
+                                    <View style={{height: 100, flex: 1, flexDirection: "row"}}>
+                                        <Text>Tab 2</Text>
+                                    </View>
+                                </Tab>
+                            </Tabs>
+                        </View>
+                    </ScrollView>
+                </View>
+                )
+            }
+            return null;
     }
 }

@@ -3,6 +3,9 @@ import { Metrics, ApplicationStyles, Colors, Fonts } from '../../Themes/'
 
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
+    scrollViewContainer: {
+      marginBottom: Metrics.doubleSection
+    },
     logo: {
         marginTop: Metrics.doubleSection,
         height: Metrics.images.logo,
@@ -52,15 +55,19 @@ export default StyleSheet.create({
         color: Colors.black,
         fontSize: Fonts.size.medium,
         fontWeight: Fonts.weight.light,
-        width: Metrics.widths.medium,
         fontFamily: Fonts.type.Roboto,
         borderWidth: 0,
         marginLeft: 0,
         marginRight: 0,
+        paddingRight: 10,
+        alignItems: 'flex-start',
+        flex: 1,
     },
-    containerSelect: {
+    columnContainer: {
         marginLeft: 0,
-
+        padding: 0,
+        flex: 1,
+        alignItems: 'flex-start'
     },
     containerInput: {
         borderBottomColor: Colors.background,
@@ -68,8 +75,8 @@ export default StyleSheet.create({
         paddingLeft: 0,
     },
     gridContainer: {
-        marginLeft: 0,
-        marginRight: 1
+        marginLeft: 5,
+        marginRight: 5
     },
 
     labelText: {
@@ -100,8 +107,8 @@ export default StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Colors.text,
         marginLeft: 5,
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 3,
+        paddingBottom: 3,
         justifyContent: 'flex-start'
     },
     tabBarWithNav: {
@@ -136,5 +143,11 @@ export default StyleSheet.create({
         alignItems: "center",
         paddingTop: 5,
         paddingBottom: 15,
+    },
+    removeIconContainer: {
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        flex: 1,
+        marginRight: 20
     }
 })

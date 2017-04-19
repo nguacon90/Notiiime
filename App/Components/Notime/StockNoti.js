@@ -20,44 +20,13 @@ export default class StockNoti extends React.Component {
         });
 
         this.state = {
-            swithStateNoti: {
-                '111': {
-                    status: true,
-                    styleCss: {
-                        color: Colors.defaultText
-                    }
-                },
-                '222': {
-                    status: true,
-                    styleCss: {
-                        color: Colors.defaultText
-                    }
-                }
-            },
-            notiStocks: [
-                {
-                    notiId: '111',
-                    type: 'STOCK',
-                    code: 'VND',
-                    field: 'matchedPrice',
-                    relation: 'LTEG',
-                    value: '20000',
-                    text: 'Giá >= 20, KL > 160,000, MA20 cắt lên MA50'
-                },{
-                    notiId: '222',
-                    type: 'STOCK',
-                    code: 'AAA',
-                    field: 'matchedPrice',
-                    relation: 'LTEG',
-                    value: '20000',
-                    text: 'Giá >= 100, KL > 10,000, MA50 cắt lên MA100'
-                }],
+            swithStateNoti: {},
             dataSource: ds
         }
     }
     componentDidMount() {
         this.setState({
-            dataSource:this.state.dataSource.cloneWithRows(this.state.notiStocks),
+            dataSource:this.state.dataSource.cloneWithRows(this.props.notiSetups),
         })
     }
 

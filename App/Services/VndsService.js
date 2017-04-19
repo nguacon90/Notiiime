@@ -206,8 +206,14 @@ const notiService = (baseURL = Constants.notiiServer) => {
         var path = "users/{userId}/notiii/new_notiii_requests".replace('{userId}', notiData.userId);
         return api.post(path, notiData);
     }
+
+    const getNotiSetups = (userId) => {
+        var path = "/user/{userId}/notiiis".replace('{userId}', userId);
+        return api.get(path);
+    }
     return {
-        register
+        register,
+        getNotiSetups
     }
 }
 

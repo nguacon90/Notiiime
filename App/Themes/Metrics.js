@@ -15,6 +15,7 @@ const metrics = {
   horizontalLineHeight: 1,
   searchBarHeight: 30,
   screenWidth: width < height ? width : height,
+    halfscreenWidth:width < height ? width/2 : height/2,
   screenHeight: width < height ? height : width,
   navBarHeight: (Platform.OS === 'ios') ? 64 : 54,
   buttonRadius: 4,
