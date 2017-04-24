@@ -11,6 +11,7 @@ import React from "react";
 import {ScrollView, View, Switch, ListView, TouchableHighlight, Text} from "react-native";
 import styles from "../../Containers/Styles/LaunchScreenStyles";
 import Colors from '../../Themes/Colors'
+import Constants from '../../Config/Constants'
 
 export default class StockNoti extends React.Component {
     constructor(props) {
@@ -25,6 +26,10 @@ export default class StockNoti extends React.Component {
         }
     }
     componentDidMount() {
+        this.props.notiSetups.forEach(function(item, index){
+            this.onOffNoti(true, item.notiiiID);
+        }.bind(this));
+
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(this.props.notiSetups),
         })
@@ -41,17 +46,39 @@ export default class StockNoti extends React.Component {
         this.setState({onOffNoti});
     }
 
+    renderTitle(row) {
+        return row.terms[0].code;
+    }
+
+    renderCondition(row) {
+        var terms = row.terms;
+        var text = '';
+        terms.forEach(function(term, index){
+            if(term.type == Constants.types.STOCK) {
+                text += Constants.conditions[term.field] + Constants.operators[term.relation] + ' ' + term.value;
+            } else if (term.type == Constants.types.LOGIC) {
+                text += typeof Constants.logicals[term.logical] != 'undefined' ? Constants.logicals[term.logical] : ' ';
+            }
+        });
+
+        return text;
+    }
+
     renderRow(rowData){
+        const notiId = rowData.notiiiID;
+
         return (
             <TouchableHighlight underlayColor='#ddd'>
                 <View style ={[styles.rowContainer, styles.listViewRow]}>
                     <View style={{flex: 1}}>
-                        <Text style={[styles.labelText, this.state.swithStateNoti[rowData.notiId].styleCss]}>{rowData.code}</Text>
-                        <Text style={[styles.subtitleLabelText, this.state.swithStateNoti[rowData.notiId].styleCss]}>{rowData.text}</Text>
+                        <Text style={[styles.labelText, this.state.swithStateNoti[notiId].styleCss, {fontWeight: 'bold'}]}>
+                            {this.renderTitle(rowData)}
+                        </Text>
+                        <Text style={[styles.subtitleLabelText]}>{this.renderCondition(rowData)}</Text>
                     </View>
                     <View style={{justifyContent: 'flex-end'}}>
-                        <Switch onValueChange={(value) => {this.onOffNoti(value, rowData.notiId)}}
-                            value={this.state.swithStateNoti[rowData.notiId].status} />
+                        <Switch onValueChange={(value) => {this.onOffNoti(value, notiId)}}
+                            value={this.state.swithStateNoti[notiId].status} />
                     </View>
                 </View>
             </TouchableHighlight>
@@ -63,7 +90,7 @@ export default class StockNoti extends React.Component {
         return (
             <View style={[styles.mainContainer, styles.stockNotiContainer]}>
                 <ScrollView style={[styles.container]}>
-                    <ListView  dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)}/>
+                    <ListView style={{marginBottom: 150}}  dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)}/>
                 </ScrollView>
             </View>
         )

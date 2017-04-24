@@ -88,7 +88,7 @@ export default StyleSheet.create({
         marginLeft: 0
     },
     subtitleLabelText: {
-        color: Colors.black,
+        color: Colors.gray,
         fontSize: Fonts.size.medium,
         fontFamily: Fonts.type.Roboto,
         fontWeight: Fonts.weight.light,

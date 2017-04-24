@@ -203,7 +203,7 @@ const notiService = (baseURL = Constants.notiiServer) => {
     }
 
     const register = (notiData) => {
-        var path = "users/{userId}/notiii/new_notiii_requests".replace('{userId}', notiData.userId);
+        var path = "users/{userId}/notiii/new_notiii_requests".replace('{userId}', notiData.userID);
         return api.post(path, notiData);
     }
 

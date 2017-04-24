@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import RootContainer from "./RootContainer";
+import { FormattedWrapper } from 'react-native-globalize';
 /**
  * Provides an entry point into our application.  Both index.ios.js and index.android.js
  * call this component first.
@@ -10,7 +11,9 @@ import RootContainer from "./RootContainer";
 class App extends Component {
   render () {
     return (
-        <RootContainer />
+        <FormattedWrapper locale={"en"}>
+          <RootContainer />
+        </FormattedWrapper>
     )
   }
 }

@@ -3,7 +3,7 @@
  */
 import React from "react";
 import {AsyncStorage, Keyboard, Picker, ScrollView, Text, View} from "react-native";
-import {Colors, Metrics} from "../../Themes/";
+import {Colors, Metrics, Fonts} from "../../Themes/";
 import styles from "../../Containers/Styles/LaunchScreenStyles";
 import {Button, Col, FormInput, FormLabel, Grid, Icon, Row} from "react-native-elements";
 import vndsService from "../../Services/VndsService";
@@ -12,6 +12,8 @@ import Constants from "../../Config/Constants";
 import {Actions} from "react-native-router-flux";
 const Item = Picker.Item;
 import DatePicker from 'react-native-datepicker'
+import {FormattedNumber} from 'react-native-globalize'
+
 export default class NotiMe extends React.Component {
 
     constructor(props) {
@@ -27,7 +29,7 @@ export default class NotiMe extends React.Component {
                     field: 'matchedPrice',
                     relation: 'GTEQ',
                     value: '',
-                    logical: 'AND'
+                    logical: ''
                 }
             ],
             note: '',
@@ -35,6 +37,14 @@ export default class NotiMe extends React.Component {
             stocks: [],
             data: [],
             isShowAutoComplete: false
+        };
+
+        this.setValue = (value, index) => {
+            var terms = this.state.terms;
+            terms[index].value = value;
+            this.setState({
+                terms: terms
+            });
         };
     }
     componentDidMount() {
@@ -99,9 +109,12 @@ export default class NotiMe extends React.Component {
             if(res.data && res.data.length != 0) {
                 var stockInfo = vndsService.messageUnmashaller().map.STOCK(res.data[0]);
                 var matchPrice = stockInfo.matchPrice;
+
                 self.setState({
                     matchPrice: matchPrice,
-                    priceColor: self.getColor(stockInfo)
+                    accumulatedVol: stockInfo.accumulatedVol * Constants.UNIT,
+                    priceColor: self.getColor(stockInfo),
+                    basicPrice: stockInfo.basicPrice
                 });
             }
         });
@@ -142,12 +155,49 @@ export default class NotiMe extends React.Component {
 
         this.props.showLoading(true);
         var self = this;
+        var len = this.state.terms.length;
+        var terms = [];
+        if(len == 0) {
+            terms = this.state.terms;
+        } else {
+            for (var i=0; i < len; i++) {
+                var term = this.state.terms[i];
+                if(i < len - 1) {
+                    terms.push({
+                        type: term.type,
+                        field: term.field,
+                        relation: term.relation,
+                        value: term.value,
+                        logical: term.logical,
+                        code: this.state.symbol
+                    });
+
+                    terms.push({
+                        type: "LOGIC",
+                        field: term.field,
+                        relation: term.relation,
+                        value: term.value,
+                        logical: "and",
+                        code: this.state.symbol
+                    });
+                } else {
+                    terms.push({
+                        type: term.type,
+                        field: term.field,
+                        relation: term.relation,
+                        value: term.value,
+                        logical: term.logical,
+                        code: this.state.symbol
+                    });
+                }
+            }
+        }
         var notiiData = {
             expiredDate: this.state.expiredDate,
             reason: this.state.note,
             symbol: this.state.symbol,
             userID: this.state.userId,
-            terms: this.state.terms
+            terms: terms
         };
 
         vndsService.notiService().register(notiiData).then((res) => {
@@ -165,13 +215,6 @@ export default class NotiMe extends React.Component {
         })
     }
 
-    setValue(value, index) {
-        var terms = this.state.terms;
-        terms[index].value = value;
-        this.setState({
-            terms: terms
-        });
-    }
     removeTerm(index) {
         var terms = this.state.terms;
         terms.splice(index, 1);
@@ -202,9 +245,9 @@ export default class NotiMe extends React.Component {
                         <Col containerStyle={styles.columnContainer}>
                             <FormInput underlineColorAndroid={Colors.transparent}
                                        containerStyle={{marginLeft: 0, paddingLeft: 30}}
-                                       inputStyle={[styles.formInput, {}]}  placeholder="value"
+                                       inputStyle={[styles.formInput]}  placeholder="value"
                                        placeholderTextColor="#78B1AA"
-                                       onChangeText={(text)=> {this.setValue.bind(this, text, index)}}/>
+                                       onChangeText={(text) => this.setValue(text, index)}/>
                         </Col>
                         <Col containerStyle={styles.removeIconContainer}>
                         </Col>
@@ -235,7 +278,7 @@ export default class NotiMe extends React.Component {
                                        containerStyle={{marginLeft: 0, paddingLeft: 30}}
                                        inputStyle={[styles.formInput]}  placeholder="value"
                                        placeholderTextColor="#78B1AA"
-                                       onChangeText={(text)=> {this.setValue.bind(this, text, index)}}/>
+                                       onChangeText={(text) => this.setValue(text, index)}/>
                         </Col>
                         <Col containerStyle={styles.removeIconContainer}>
                             <Icon type="font-awesome" name="minus-circle" color={Colors.defaultText}
@@ -244,7 +287,7 @@ export default class NotiMe extends React.Component {
                     </Row>
                 );
             }
-        }.bind(this))
+        }.bind(this));
     }
     addTerms() {
         var terms = this.state.terms;
@@ -253,20 +296,45 @@ export default class NotiMe extends React.Component {
             field: 'matchedPrice',
             relation: 'GTEQ',
             value: '',
-            logical: 'AND'
+            logical: ''
         });
         this.setState({terms:terms});
     }
 
+    renderVolumn() {
+        if(typeof this.state.accumulatedVol != 'undefined') {
+            return (
+                <FormattedNumber value={this.state.accumulatedVol}/>
+            )
+        }
+        return null;
+    }
+
+    renderPercent() {
+        console.log(this.state.basicPrice)
+        if(typeof this.state.basicPrice != 'undefined' && this.state.basicPrice != 0) {
+            var percent = (this.state.matchPrice - this.state.basicPrice) * 100 / this.state.basicPrice;
+            return (
+                <Text>
+                    <FormattedNumber value={percent} minimumFractionDigits={2} maximumFractionDigits={2} />{"%"}
+                </Text>
+            )
+        }
+
+        return null;
+    }
+
     render () {
         const terms = this.renderTerms();
+        const volumn = this.renderVolumn();
+        const percent = this.renderPercent();
         return (
             <View style={styles.mainContainer}>
                 <ScrollView style={[styles.container, styles.scrollViewContainer]}>
                     <View style={styles.section} >
                         <Grid containerStyle={styles.gridContainer}>
                             <Row containerStyle={{marginLeft:0, justifyContent: 'flex-start'}}>
-                                <Col>
+                                <Col containerStyle={{width: 130}}>
                                     <FormInput containerStyle={{marginRight: 0, marginLeft: 0}}
                                                inputStyle={[styles.formInput, {flex: 1, alignItems: 'flex-start', width: 80,
                                         fontSize: 18, color: Colors.defaultText, fontWeight: 'bold'}]}
@@ -279,11 +347,16 @@ export default class NotiMe extends React.Component {
                                                placeholder="Mã CK" placeholderTextColor="#78B1AA">
                                     </FormInput>
                                 </Col>
-                                <Col>
-                                    <FormLabel labelStyle={styles.labelText}>
-                                        <Text>Giá khớp: </Text>
-                                        <Text style={{color: this.state.priceColor, paddingLeft: Metrics.baseMargin}}> {this.state.matchPrice}</Text>
-                                    </FormLabel>
+                                <Col containerStyle={{flex: 1, alignItems: 'flex-end', flexDirection: 'row'}}>
+                                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                                        <Text style={{color: this.state.priceColor, fontSize: Fonts.size.h6}}>{this.state.matchPrice}</Text>
+                                    </View>
+                                    <View style={{marginLeft: Metrics.baseMargin}}>
+                                        <Text style={{color: this.state.priceColor, fontSize: Fonts.size.medium}}>{percent}</Text>
+                                    </View>
+                                    <View style={{marginLeft: Metrics.baseMargin}}>
+                                        <Text style={{color: Colors.gray, fontSize: Fonts.size.h6}}>{volumn}</Text>
+                                    </View>
                                 </Col>
                             </Row>
                             <Row containerStyle={[{marginLeft: 5}, styles.rowContainer]}>
@@ -311,13 +384,13 @@ export default class NotiMe extends React.Component {
                                         date={this.state.expiredDate}
                                         mode="date"
                                         placeholder="Chọn ngày"
-                                        format="YYYY-MM-DD"
+                                        format="DD-MM-YYYY"
                                         minDate={new Date()}
-                                        maxDate="2030-06-01"
+                                        maxDate="01-01-2060"
                                         confirmBtnText="Confirm"
                                         cancelBtnText="Cancel"
                                         showIcon={false}
-                                        androidMode={'default'}
+                                        androidMode={'spinner'}
                                         customStyles={{
                                             dateInput: {
                                                 borderWidth: 0
@@ -337,7 +410,7 @@ export default class NotiMe extends React.Component {
                             </Row>
                             <Row>
                                 <Col containerStyle={{alignItems: 'center'}}>
-                                    <Button buttonStyle={{width: 100, marginTop: 20}} backgroundColor="#18BA9C" borderRadius={5} title='Tạo Noti'
+                                    <Button buttonStyle={{width: Metrics.halfscreenWidth, marginTop: 20}} backgroundColor="#18BA9C" borderRadius={5} title='Tạo Noti'
                                             onPress={() => {this.createNotiiime()}} />
                                 </Col>
                             </Row>
