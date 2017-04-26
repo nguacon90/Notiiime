@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "837907545739",
+    "project_id": "default-demo-app-a2835"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837907545739:android:6a2f34741ef11ab5",
+        "android_client_info": {
+          "package_name": "com.notiiime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837907545739-r2pmnn877qno3rdl6seua85t9e49rvjd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.notiiime",
+            "certificate_hash": "729dc569c512cb86147e44dcd434812be1711aef"
+          }
+        },
+        {
+          "client_id": "837907545739-eh27fa33btu6nckdfr8584p5n57bd7r2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAULckkPnr-7D1_ZHW5hpLJ33X3gB7muws"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

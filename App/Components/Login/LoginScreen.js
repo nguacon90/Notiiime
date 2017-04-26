@@ -27,11 +27,11 @@ export default class NotiMeHome extends React.Component {
             });
             this.props.showBottomMenu(true);
             SplashScreen.hide();
-            vndsService.clientMQTT("1001", "signal", function(message){
-               alert(message);
-            }, function(errMessage){
-                console.log(errMessage)
-            }).start();
+            // vndsService.clientMQTT("1001", "signal", function(message){
+            //    alert(message);
+            // }, function(errMessage){
+            //     console.log(errMessage)
+            // }).start();
             Actions.notime();
         }
 

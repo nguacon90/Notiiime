@@ -50,7 +50,7 @@ export default class NotiMe extends React.Component {
                     notiSetups: res.data
                 });
             } else {
-                alsert(res.problem);
+                //alert(res.problem);
             }
 
         }).catch((err) => {
