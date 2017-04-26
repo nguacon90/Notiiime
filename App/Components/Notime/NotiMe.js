@@ -46,7 +46,6 @@ export default class NotiMe extends React.Component {
                     this.props.showLoading(false);
                     return;
                 }
-
                 this.setState({
                     notiSetups: res.data
                 });

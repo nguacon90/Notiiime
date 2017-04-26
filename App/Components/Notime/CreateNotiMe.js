@@ -197,8 +197,10 @@ export default class NotiMe extends React.Component {
             reason: this.state.note,
             symbol: this.state.symbol,
             userID: this.state.userId,
-            terms: terms
+            terms: terms,
+            frequencyOfReceipt: 3
         };
+
 
         vndsService.notiService().register(notiiData).then((res) => {
             self.props.showLoading(false);
@@ -231,7 +233,7 @@ export default class NotiMe extends React.Component {
                                     selectedValue={this.state.terms[index].field}
                                     onValueChange={this.onValueChange.bind(this, 'field', index)}>
                                 <Item label="Giá" value="matchedPrice" />
-                                <Item label="Khối lượng" value="quantity" />
+                                <Item label="Khối lượng" value="accumulatedVol" />
                             </Picker>
                         </Col>
                         <Col containerStyle={styles.columnContainer}>
@@ -262,7 +264,7 @@ export default class NotiMe extends React.Component {
                                     itemStyle={{padding: 0}}
                                     onValueChange={this.onValueChange.bind(this, 'field', index)}>
                                 <Item label="Giá" value="matchedPrice" />
-                                <Item label="Khối lượng" value="quantity" />
+                                <Item label="Khối lượng" value="accumulatedVol" />
                             </Picker>
                         </Col>
                         <Col containerStyle={styles.columnContainer}>

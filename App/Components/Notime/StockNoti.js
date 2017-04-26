@@ -12,6 +12,7 @@ import {ScrollView, View, Switch, ListView, TouchableHighlight, Text} from "reac
 import styles from "../../Containers/Styles/LaunchScreenStyles";
 import Colors from '../../Themes/Colors'
 import Constants from '../../Config/Constants'
+import {PropTypes} from 'react-native-globalize'
 
 export default class StockNoti extends React.Component {
     constructor(props) {
@@ -53,9 +54,12 @@ export default class StockNoti extends React.Component {
     renderCondition(row) {
         var terms = row.terms;
         var text = '';
+        var numberFormat = this.context.globalize.getNumberFormatter({minimumFractionDigits: 0, maximumFractionDigits: 0 });
         terms.forEach(function(term, index){
             if(term.type == Constants.types.STOCK) {
-                text += Constants.conditions[term.field] + Constants.operators[term.relation] + ' ' + term.value;
+
+                var value = numberFormat(term.value);
+                text += Constants.conditions[term.field] + ' ' + Constants.operators[term.relation] + ' ' + value;
             } else if (term.type == Constants.types.LOGIC) {
                 text += typeof Constants.logicals[term.logical] != 'undefined' ? Constants.logicals[term.logical] : ' ';
             }
@@ -96,3 +100,7 @@ export default class StockNoti extends React.Component {
         )
     }
 }
+
+StockNoti.contextTypes = {
+    globalize: PropTypes.globalizeShape,
+};

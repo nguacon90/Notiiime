@@ -7,7 +7,7 @@ export default Constants = {
     },
     accessToken: 'AccessToken',
     // notiiServer: 'http://notiii.com',
-    notiiServer: 'http://103.63.109.80:8080/',
+    notiiServer: 'http://notiii.com:8080/',
     priceServer: 'https://price-hn04.vndirect.com.vn/priceservice/',
     finfoServer: 'https://finfoapi-hn.vndirect.com.vn/',
     deviceId: DeviceInfo.getUniqueID(),
@@ -21,8 +21,8 @@ export default Constants = {
         'or': ' hoặc '
     },
     conditions: {
-        'matchedPrice': 'Giá khớp ',
-        'accumulatedVol': 'Khối lượng '
+        'matchedPrice': 'Giá khớp',
+        'accumulatedVol': 'Khối lượng'
     },
     types: {
         'STOCK': 'STOCK',
