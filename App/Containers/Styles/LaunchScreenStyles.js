@@ -66,8 +66,6 @@ export default StyleSheet.create({
     columnContainer: {
         marginLeft: 0,
         padding: 0,
-        flex: 1,
-        alignItems: 'flex-start'
     },
     containerInput: {
         borderBottomColor: Colors.background,
@@ -109,7 +107,9 @@ export default StyleSheet.create({
         marginLeft: 5,
         paddingTop: 3,
         paddingBottom: 3,
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     tabBarWithNav: {
         marginTop: Metrics.navBarHeight,
@@ -144,10 +144,13 @@ export default StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 15,
     },
-    removeIconContainer: {
-        alignItems: 'flex-end',
-        justifyContent: 'center',
+    pickerGroup: {
         flex: 1,
-        marginRight: 20
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end'
+    },
+    largePicker: {
+        width: 150
     }
 })

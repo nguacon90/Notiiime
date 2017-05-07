@@ -1,4 +1,4 @@
-package com.notiiime;
+package vn.com.notify.stocksignal;
 
 import android.app.Application;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -16,6 +16,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import java.util.Arrays;
 import java.util.List;
 import com.cboy.rn.splashscreen.SplashScreenReactPackage;
+
 
 public class MainApplication extends Application implements ReactApplication {
   private static CallbackManager mCallbackManager = CallbackManager.Factory.create();

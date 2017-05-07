@@ -39,8 +39,8 @@ export default class NotiMe extends React.Component {
 
     loadNotiSetups() {
         vndService.notiService().getNotiSetups(this.state.userId).then((res)=>{
+            this.props.showLoading(false);
             if(res.ok) {
-                this.props.showLoading(false);
                 if(res.data.length == 0) {
                     Actions.emptyNoti();
                     this.props.showLoading(false);
@@ -50,10 +50,11 @@ export default class NotiMe extends React.Component {
                     notiSetups: res.data
                 });
             } else {
-                //alert(res.problem);
+                alert(res.problem);
             }
 
         }).catch((err) => {
+            this.props.showLoading(false);
             alert(err);
         });
 

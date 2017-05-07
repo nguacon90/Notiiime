@@ -85,7 +85,7 @@ export default class NotiMe extends React.Component {
 
         this.setState({
             data: data,
-            symbol: text
+            symbol: text.toUpperCase()
         });
     }
 
@@ -147,6 +147,17 @@ export default class NotiMe extends React.Component {
         }
     }
 
+    validateNoti() {
+        var len = this.state.terms.length;
+        if(len == 0) {
+            throw 'Bạn cần tạo điều kiện';
+        }
+
+        if(this.state.symbol == '' || typeof (this.state.symbol) == 'undefined') {
+            throw 'Bạn cần chọn mã chứng khoán';
+        }
+    }
+
     createNotiiime() {
         if(this.state.userId == '' || typeof (this.state.userId) == 'undefined') {
             alert('Bạn cần login để sử dụng tính năng này')
@@ -157,39 +168,42 @@ export default class NotiMe extends React.Component {
         var self = this;
         var len = this.state.terms.length;
         var terms = [];
-        if(len == 0) {
-            terms = this.state.terms;
-        } else {
-            for (var i=0; i < len; i++) {
-                var term = this.state.terms[i];
-                if(i < len - 1) {
-                    terms.push({
-                        type: term.type,
-                        field: term.field,
-                        relation: term.relation,
-                        value: term.value,
-                        logical: term.logical,
-                        code: this.state.symbol
-                    });
+        try {
+            this.validateNoti();
+        } catch (e) {
+            this.props.showLoading(false);
+            alert(e);
+            return false;
+        }
+        for (var i=0; i < len; i++) {
+            var term = this.state.terms[i];
+            if(i < len - 1) {
+                terms.push({
+                    type: term.type,
+                    field: term.field,
+                    relation: term.relation,
+                    value: term.value,
+                    logical: term.logical,
+                    code: this.state.symbol
+                });
 
-                    terms.push({
-                        type: "LOGIC",
-                        field: term.field,
-                        relation: term.relation,
-                        value: term.value,
-                        logical: "and",
-                        code: this.state.symbol
-                    });
-                } else {
-                    terms.push({
-                        type: term.type,
-                        field: term.field,
-                        relation: term.relation,
-                        value: term.value,
-                        logical: term.logical,
-                        code: this.state.symbol
-                    });
-                }
+                terms.push({
+                    type: "LOGIC",
+                    field: term.field,
+                    relation: term.relation,
+                    value: term.value,
+                    logical: "and",
+                    code: this.state.symbol
+                });
+            } else {
+                terms.push({
+                    type: term.type,
+                    field: term.field,
+                    relation: term.relation,
+                    value: term.value,
+                    logical: term.logical,
+                    code: this.state.symbol
+                });
             }
         }
         var notiiData = {
@@ -204,7 +218,6 @@ export default class NotiMe extends React.Component {
 
         vndsService.notiService().register(notiiData).then((res) => {
             self.props.showLoading(false);
-            console.log(res);
             if(res.ok) {
                 Actions.notime();
             } else {
@@ -212,8 +225,8 @@ export default class NotiMe extends React.Component {
             }
         })
         .catch((err) =>{
-            alert(err);
             self.props.showLoading(false);
+            alert(err);
         })
     }
 
@@ -225,20 +238,21 @@ export default class NotiMe extends React.Component {
 
     renderTerms() {
         return this.state.terms.map(function(term, index){
-            if(index == 0) {
                 return (
                     <Row containerStyle={styles.rowContainer} key={index}>
                         <Col containerStyle={styles.columnContainer}>
-                            <Picker style={{width: 120, flex: 1, alignItems: 'flex-start', padding: 0, margin: 0}}
+                            <Picker style={[styles.pickerGroup, styles.largePicker]}
                                     selectedValue={this.state.terms[index].field}
+                                    itemStyle={{padding: 0}} mode="dropdown"
                                     onValueChange={this.onValueChange.bind(this, 'field', index)}>
                                 <Item label="Giá" value="matchedPrice" />
                                 <Item label="Khối lượng" value="accumulatedVol" />
                             </Picker>
                         </Col>
                         <Col containerStyle={styles.columnContainer}>
-                            <Picker style={{width: 60, marginLeft: 40, marginRight: 10, alignItems: 'flex-start'}}
+                            <Picker style={[styles.pickerGroup, {marginLeft: 50, width: 100}]}
                                     selectedValue={this.state.terms[index].relation}
+                                    mode="dropdown"
                                     onValueChange={this.onValueChange.bind(this, 'relation', index)}>
                                 <Item label=">=" value="GTEQ" />
                                 <Item label="<=" value="LTEQ" />
@@ -251,48 +265,20 @@ export default class NotiMe extends React.Component {
                                        placeholderTextColor="#78B1AA"
                                        onChangeText={(text) => this.setValue(text, index)}/>
                         </Col>
-                        <Col containerStyle={styles.removeIconContainer}>
-                        </Col>
-                    </Row>
-                )
-            } else {
-                return (
-                    <Row containerStyle={styles.rowContainer} key={index}>
-                        <Col containerStyle={styles.columnContainer}>
-                            <Picker style={{width: 120, flex: 1, alignItems: 'flex-start', padding: 0, margin: 0}}
-                                    selectedValue={this.state.terms[index].field}
-                                    itemStyle={{padding: 0}}
-                                    onValueChange={this.onValueChange.bind(this, 'field', index)}>
-                                <Item label="Giá" value="matchedPrice" />
-                                <Item label="Khối lượng" value="accumulatedVol" />
-                            </Picker>
-                        </Col>
-                        <Col containerStyle={styles.columnContainer}>
-                            <Picker style={{width: 60, marginLeft: 40, marginRight: 10, alignItems: 'flex-start'}}
-                                    selectedValue={this.state.terms[index].relation}
-                                    onValueChange={this.onValueChange.bind(this, 'relation', index)}>
-                                <Item label=">=" value="GTEQ" />
-                                <Item label="<=" value="LTEQ" />
-                            </Picker>
-                        </Col>
-                        <Col containerStyle={styles.columnContainer}>
-                            <FormInput underlineColorAndroid={Colors.transparent}
-                                       containerStyle={{marginLeft: 0, paddingLeft: 30}}
-                                       inputStyle={[styles.formInput]}  placeholder="value"
-                                       placeholderTextColor="#78B1AA"
-                                       onChangeText={(text) => this.setValue(text, index)}/>
-                        </Col>
-                        <Col containerStyle={styles.removeIconContainer}>
-                            <Icon type="font-awesome" name="minus-circle" color={Colors.defaultText}
-                                    onPress={this.removeTerm.bind(this, index)}/>
-                        </Col>
+                            <Icon containerStyle={{width: 30, margin: 0}}
+                                  type="font-awesome" name="minus-circle"
+                                  color={Colors.defaultText}
+                                  onPress={this.removeTerm.bind(this, index)}/>
                     </Row>
                 );
-            }
         }.bind(this));
     }
     addTerms() {
         var terms = this.state.terms;
+        if(terms.length == 3) {
+            return false;
+        }
+
         terms.push({
             type: 'STOCK',
             field: 'matchedPrice',
@@ -313,7 +299,6 @@ export default class NotiMe extends React.Component {
     }
 
     renderPercent() {
-        console.log(this.state.basicPrice)
         if(typeof this.state.basicPrice != 'undefined' && this.state.basicPrice != 0) {
             var percent = (this.state.matchPrice - this.state.basicPrice) * 100 / this.state.basicPrice;
             return (
@@ -326,10 +311,29 @@ export default class NotiMe extends React.Component {
         return null;
     }
 
+    renderAddIcon() {
+        if(this.state.terms.length < 3) {
+            return (
+                <Icon raised={false} name='plus-circle' type='font-awesome'
+                      color={Colors.defaultText}
+                      underlayColor="transparent" size={18}
+                      reverseColor="transparent"/>
+            );
+        }
+
+        return (
+            <Icon raised={false} name='plus-circle' type='font-awesome'
+                  color={Colors.steel}
+                  underlayColor="transparent" size={18}
+                  reverseColor="transparent"/>
+        );
+    }
+
     render () {
         const terms = this.renderTerms();
         const volumn = this.renderVolumn();
         const percent = this.renderPercent();
+        const addIcon = this.renderAddIcon();
         return (
             <View style={styles.mainContainer}>
                 <ScrollView style={[styles.container, styles.scrollViewContainer]}>
@@ -369,10 +373,7 @@ export default class NotiMe extends React.Component {
 
                             <Row containerStyle={styles.rowContainer}>
                                 <Col containerStyle={{justifyContent: 'center', width: 30}} onPress={this.addTerms.bind(this)}>
-                                    <Icon raised={false} name='plus-circle' type='font-awesome'
-                                          color={Colors.defaultText}
-                                          underlayColor="transparent" size={18}
-                                          reverseColor="transparent"/>
+                                    {addIcon}
                                 </Col>
                                 <Col containerStyle={{alignItems: 'flex-start', marginBottom: 10}} onPress={this.addTerms.bind(this)}>
                                     <FormLabel labelStyle={styles.labelText}>Thêm</FormLabel>

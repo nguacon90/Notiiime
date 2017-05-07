@@ -1,4 +1,4 @@
-package com.notiiime;
+package vn.com.notify.stocksignal;
 
 import com.facebook.react.ReactActivity;
 import android.content.Intent;

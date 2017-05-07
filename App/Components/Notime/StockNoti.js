@@ -1,12 +1,3 @@
-/**
- * Created by minh on 19/04/2017.
- */
-/**
- * Created by minh on 17/04/2017.
- */
-/**
- * Created by minh on 16/04/2017.
- */
 import React from "react";
 import {ScrollView, View, Switch, ListView, TouchableHighlight, Text} from "react-native";
 import styles from "../../Containers/Styles/LaunchScreenStyles";
@@ -57,8 +48,10 @@ export default class StockNoti extends React.Component {
         var numberFormat = this.context.globalize.getNumberFormatter({minimumFractionDigits: 0, maximumFractionDigits: 0 });
         terms.forEach(function(term, index){
             if(term.type == Constants.types.STOCK) {
-
-                var value = numberFormat(term.value);
+                var value = '';
+                if(term.value) {
+                    value = numberFormat(term.value);
+                }
                 text += Constants.conditions[term.field] + ' ' + Constants.operators[term.relation] + ' ' + value;
             } else if (term.type == Constants.types.LOGIC) {
                 text += typeof Constants.logicals[term.logical] != 'undefined' ? Constants.logicals[term.logical] : ' ';
