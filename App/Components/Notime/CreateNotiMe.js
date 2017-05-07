@@ -156,6 +156,13 @@ export default class NotiMe extends React.Component {
         if(this.state.symbol == '' || typeof (this.state.symbol) == 'undefined') {
             throw 'Bạn cần chọn mã chứng khoán';
         }
+
+        var terms = this.state.terms;
+        for (var i=0; i < len; i++) {
+            if(typeof (terms[i].value) == 'undefined' || terms[i].value == '') {
+                throw 'Bạn cần nhập giá trị cho các điều kiện'
+            }
+        }
     }
 
     createNotiiime() {
@@ -260,7 +267,7 @@ export default class NotiMe extends React.Component {
                         </Col>
                         <Col containerStyle={styles.columnContainer}>
                             <FormInput underlineColorAndroid={Colors.transparent}
-                                       containerStyle={{marginLeft: 0, paddingLeft: 30}}
+                                       containerStyle={{marginLeft: 15, paddingLeft: 30}}
                                        inputStyle={[styles.formInput]}  placeholder="value"
                                        placeholderTextColor="#78B1AA"
                                        onChangeText={(text) => this.setValue(text, index)}/>

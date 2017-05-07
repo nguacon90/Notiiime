@@ -1,12 +1,11 @@
 import React from "react";
 import {AsyncStorage, ScrollView, Text, View} from "react-native";
 import styles from "../../Containers/Styles/LaunchScreenStyles";
-import {Icon} from 'react-native-elements'
+import {Icon} from "react-native-elements";
 import Constants from "../../Config/Constants";
 import LoginFacebook from "./LoginFacebook";
-import SplashScreen from 'react-native-splash-screen'
-import {Actions} from 'react-native-router-flux'
-import vndsService from "../../Services/VndsService"
+import SplashScreen from "react-native-splash-screen";
+import {Actions} from "react-native-router-flux";
 
 export default class NotiMeHome extends React.Component {
     constructor(props) {
