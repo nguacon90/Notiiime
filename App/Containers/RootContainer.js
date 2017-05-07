@@ -18,7 +18,6 @@ class RootContainer extends Component {
             loginIcon: 'sign-in',
             loginText: 'Đăng nhập'
         }
-        this.toggleSideMenu = this.toggleSideMenu.bind(this)
     }
 
     renderMenuLogin = (isLogin) => {
@@ -53,7 +52,7 @@ class RootContainer extends Component {
     }
 
     render() {
-        const menu = <MenuComp toggleSideMenu={this.toggleSideMenu} loginIcon={this.state.loginIcon}
+        const menu = <MenuComp toggleSideMenu={this.toggleSideMenu.bind(this)} loginIcon={this.state.loginIcon}
                         loginText={this.state.loginText} renderMenuLogin={this.renderMenuLogin.bind(this)}/>
         return (
             <View style={styles.applicationView}>

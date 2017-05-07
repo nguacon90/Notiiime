@@ -21,7 +21,6 @@ class MenuComp extends Component {
 
     componentDidMount() {
         this.checklogin().done()
-
     }
 
     doLoginOrLogout() {
