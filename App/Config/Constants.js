@@ -11,7 +11,17 @@ export default Constants = {
     priceServer: 'https://price-hn04.vndirect.com.vn/priceservice/',
     finfoServer: 'https://finfoapi-hn.vndirect.com.vn/',
     deviceId: DeviceInfo.getUniqueID(),
-
+    relations: [{
+        label: '>=',
+        value: 'GTEQ'
+    }, {
+        label: '<=',
+        value: 'LTEQ'
+    }],
+    MARelations: [{
+        label: 'Cắt lên',
+        value: 'CT'
+    }],
     operators: {
         'LTEQ': '<=',
         'GTEQ': '>='
@@ -21,9 +31,42 @@ export default Constants = {
         'or': ' hoặc '
     },
     conditions: {
-        'matchedPrice': 'Giá khớp',
-        'accumulatedVol': 'Khối lượng'
+        matchedPrice: {
+            key: 'matchedPrice',
+            label: 'Giá khớp'
+        },
+        accumulatedVol: {
+            key: 'accumulatedVol',
+            label: 'Khối lượng AAA '
+        },
+        MA20: {
+            key: 'MA20',
+            label: 'MA20'
+        },
+        MA50: {
+            key: 'MA50',
+            label: 'MA50'
+        },
+        MA100: {
+            key: 'MA100',
+            label: 'MA100'
+        }
     },
+
+    MAConditions: [
+        {
+            key: 'MA20',
+            label: 'MA20'
+        },
+        {
+            key: 'MA50',
+            label: 'MA50'
+        },
+        {
+            key: 'MA100',
+            label: 'MA100'
+        }
+    ],
     types: {
         'STOCK': 'STOCK',
         'LOGIC': 'LOGIC'

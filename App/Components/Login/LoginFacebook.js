@@ -25,7 +25,7 @@ class LoginFacebook extends Component {
                     onLoginFinished={
             (error, result) => {
               if (error) {
-                alert("login has error: " + result.error);
+                  self.props.showError(true, error);
               } else if (result.isCancelled) {
               } else {
                 AccessToken.getCurrentAccessToken().then(

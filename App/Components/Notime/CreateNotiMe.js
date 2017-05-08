@@ -29,14 +29,17 @@ export default class NotiMe extends React.Component {
                     field: 'matchedPrice',
                     relation: 'GTEQ',
                     value: '',
-                    logical: ''
+                    logical: '',
+                    relationOptions: Constants.relations
                 }
             ],
             note: '',
             expiredDate: '',
             stocks: [],
             data: [],
-            isShowAutoComplete: false
+            isShowAutoComplete: false,
+            modalVisible: false,
+
         };
 
         this.setValue = (value, index) => {
@@ -92,6 +95,22 @@ export default class NotiMe extends React.Component {
     onValueChange = (key: string, index, value: string) => {
         const terms = this.state.terms;
         terms[index][key] = value;
+        console.log(key, value)
+        if(value == Constants.conditions.accumulatedVol.key && key == 'field') {
+            terms[index].relationOptions =[{
+                label: '>=',
+                value: 'GTEQ'
+            }];
+        } else if(value == Constants.conditions.matchedPrice.key && key == 'field') {
+            terms[index].relationOptions = Constants.relations
+        }   else if(key == 'field' && (
+                value == Constants.conditions.MA20.key ||
+                value == Constants.conditions.MA50.key ||
+                value == Constants.conditions.MA100.key
+            )) {
+            terms[index].relationOptions = Constants.MARelations
+        }
+
         this.setState({terms:terms});
     }
 
@@ -167,7 +186,7 @@ export default class NotiMe extends React.Component {
 
     createNotiiime() {
         if(this.state.userId == '' || typeof (this.state.userId) == 'undefined') {
-            alert('Bạn cần login để sử dụng tính năng này')
+            this.props.showError(true, 'Bạn cần login để sử dụng tính năng này');
             return;
         }
 
@@ -179,7 +198,7 @@ export default class NotiMe extends React.Component {
             this.validateNoti();
         } catch (e) {
             this.props.showLoading(false);
-            alert(e);
+            this.props.showError(true, e);
             return false;
         }
         for (var i=0; i < len; i++) {
@@ -222,6 +241,7 @@ export default class NotiMe extends React.Component {
             frequencyOfReceipt: 3
         };
 
+        console.log(notiiData);
 
         vndsService.notiService().register(notiiData).then((res) => {
             self.props.showLoading(false);
@@ -233,7 +253,9 @@ export default class NotiMe extends React.Component {
         })
         .catch((err) =>{
             self.props.showLoading(false);
-            alert(err);
+            this.setState({
+                modalVisible: true
+            });
         })
     }
 
@@ -243,34 +265,74 @@ export default class NotiMe extends React.Component {
         this.setState({terms:terms});
     }
 
+    renderRelationOptions(index) {
+        var relation = this.state.terms[index].relationOptions.map((r, i) => {
+            return <Item key={i} value={r.value} label={r.label} />
+        });
+
+        return relation;
+    };
+
+    renderMAOptions(index) {
+        var MAField = this.state.terms[index].field;
+        return Constants.MAConditions.filter(ma => ma.key != MAField).map((r, i) => {
+            return <Item key={i} value={r.value} label={r.label} />
+        });
+    }
+
+    renderValue(index) {
+        if(Constants.conditions.MA20.key == this.state.terms[index].field ||
+            Constants.conditions.MA50.key == this.state.terms[index].field ||
+            Constants.conditions.MA100.key == this.state.terms[index].field) {
+            return (
+                <Picker style={[styles.pickerGroup, {width: 100}]}
+                        selectedValue={this.state.terms[index].value}
+                        itemStyle={[styles.pickerItem]} mode="dropdown"
+                        onValueChange={this.onValueChange.bind(this, 'value', index)}>
+                    <Item label={Constants.conditions.MA20.label} value={Constants.conditions.MA20.key} />
+                    <Item label={Constants.conditions.MA50.label} value={Constants.conditions.MA50.key} />
+                    <Item label={Constants.conditions.MA100.label} value={Constants.conditions.MA100.key} />
+                    {/*{this.renderMAOptions(index)}*/}
+                </Picker>
+            )
+        }
+
+        return (
+            <FormInput  underlineColorAndroid={Colors.transparent}
+                        containerStyle={{marginLeft: 15}}
+                        inputStyle={[styles.formInput]}  placeholder="value"
+                        placeholderTextColor="#78B1AA"
+                        onChangeText={(text) => this.setValue(text, index)}/>
+        )
+    }
+
     renderTerms() {
         return this.state.terms.map(function(term, index){
                 return (
                     <Row containerStyle={styles.rowContainer} key={index}>
                         <Col containerStyle={styles.columnContainer}>
-                            <Picker style={[styles.pickerGroup, styles.largePicker]}
+                            <Picker style={[styles.pickerGroup]}
                                     selectedValue={this.state.terms[index].field}
-                                    itemStyle={{padding: 0}} mode="dropdown"
+                                    itemStyle={[styles.pickerItem]} mode="dropdown"
                                     onValueChange={this.onValueChange.bind(this, 'field', index)}>
-                                <Item label="Giá" value="matchedPrice" />
-                                <Item label="Khối lượng" value="accumulatedVol" />
+                                <Item label={Constants.conditions.matchedPrice.label} value={Constants.conditions.matchedPrice.key} />
+                                <Item label={Constants.conditions.accumulatedVol.label} value={Constants.conditions.accumulatedVol.key} />
+                                <Item label={Constants.conditions.MA20.label} value={Constants.conditions.MA20.key} />
+                                <Item label={Constants.conditions.MA50.label} value={Constants.conditions.MA50.key} />
+                                <Item label={Constants.conditions.MA100.label} value={Constants.conditions.MA100.key} />
                             </Picker>
                         </Col>
                         <Col containerStyle={styles.columnContainer}>
-                            <Picker style={[styles.pickerGroup, {marginLeft: 50, width: 100}]}
+                            <Picker style={[styles.pickerGroup]}
+                                    itemStyle={[styles.pickerItem]}
                                     selectedValue={this.state.terms[index].relation}
                                     mode="dropdown"
                                     onValueChange={this.onValueChange.bind(this, 'relation', index)}>
-                                <Item label=">=" value="GTEQ" />
-                                <Item label="<=" value="LTEQ" />
+                                {this.renderRelationOptions(index)}
                             </Picker>
                         </Col>
                         <Col containerStyle={styles.columnContainer}>
-                            <FormInput underlineColorAndroid={Colors.transparent}
-                                       containerStyle={{marginLeft: 15, paddingLeft: 30}}
-                                       inputStyle={[styles.formInput]}  placeholder="value"
-                                       placeholderTextColor="#78B1AA"
-                                       onChangeText={(text) => this.setValue(text, index)}/>
+                            {this.renderValue(index)}
                         </Col>
                             <Icon containerStyle={{width: 30, margin: 0}}
                                   type="font-awesome" name="minus-circle"
@@ -291,7 +353,8 @@ export default class NotiMe extends React.Component {
             field: 'matchedPrice',
             relation: 'GTEQ',
             value: '',
-            logical: ''
+            logical: '',
+            relationOptions: Constants.relations
         });
         this.setState({terms:terms});
     }

@@ -52,7 +52,7 @@ export default class StockNoti extends React.Component {
                 if(term.value) {
                     value = numberFormat(term.value);
                 }
-                text += Constants.conditions[term.field] + ' ' + Constants.operators[term.relation] + ' ' + value;
+                text += Constants.conditions[term.field].value + ' ' + Constants.operators[term.relation] + ' ' + value;
             } else if (term.type == Constants.types.LOGIC) {
                 text += typeof Constants.logicals[term.logical] != 'undefined' ? Constants.logicals[term.logical] : ' ';
             }

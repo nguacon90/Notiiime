@@ -147,10 +147,16 @@ export default StyleSheet.create({
     pickerGroup: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end'
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+        padding: 0
     },
-    largePicker: {
-        width: 150
+    pickerItem: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 0
     }
 })

@@ -16,7 +16,8 @@ export default class NotiMe extends React.Component {
         this.state = {
             userId : '',
             notiSetups: [],
-            selectedTab: 'stock'
+            selectedTab: 'stock',
+            modalVisible: false
         }
     }
     componentDidMount() {
@@ -38,24 +39,25 @@ export default class NotiMe extends React.Component {
     }
 
     loadNotiSetups() {
-        vndService.notiService().getNotiSetups(this.state.userId).then((res)=>{
-            this.props.showLoading(false);
+        var self = this;
+        vndService.notiService().getNotiSetups(this.state.userId).then((res)=> {
+            self.props.showLoading(false);
             if(res.ok) {
                 if(res.data.length == 0) {
                     Actions.emptyNoti();
-                    this.props.showLoading(false);
+                    self.props.showLoading(false);
                     return;
                 }
-                this.setState({
+                self.setState({
                     notiSetups: res.data
                 });
             } else {
-                alert(res.problem);
+                self.props.showError(true, res.problem);
             }
 
         }).catch((err) => {
-            this.props.showLoading(false);
-            alert(err);
+            self.props.showLoading(false);
+            self.props.showError(true, err);
         });
 
     }
@@ -76,14 +78,14 @@ export default class NotiMe extends React.Component {
                                     titleStyle={styles.titleTextDefault}
                                     selected={this.state.selectedTab === 'stock'}
                                     title={'Mã'}
-                                    onPress={() => this.changeTab('stock')}>
+                                    onPress={() => {this.changeTab('stock')}}>
                                     <StockNoti notiSetups={this.state.notiSetups}/>
                                 </Tab>
                                 <Tab selectedTitleStyle={styles.selectedTitle}
                                     titleStyle={styles.titleTextDefault}
                                     selected={this.state.selectedTab === 'market'}
                                     title={'Thị trường'}
-                                    onPress={() => this.changeTab('market')}>
+                                    onPress={() => {this.changeTab('market')}}>
                                     <View style={{height: 100, flex: 1, flexDirection: "row"}}>
                                         <Text>Tab 2</Text>
                                     </View>

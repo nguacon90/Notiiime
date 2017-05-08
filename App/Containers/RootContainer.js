@@ -8,6 +8,7 @@ import MenuComp from '../Components/Menu/Menu'
 import styles from './Styles/RootContainerStyles'
 import Colors from '../Themes/Colors'
 import FcmNoti from '../Components/Notime/FcmNoti'
+import ModalElert from '../Components/Modal/ModalAlert'
 
 class RootContainer extends Component {
     constructor () {
@@ -17,7 +18,8 @@ class RootContainer extends Component {
             isLoading: false,
             visibleBottomMenu: true,
             loginIcon: 'sign-in',
-            loginText: 'Đăng nhập'
+            loginText: 'Đăng nhập',
+            modalVisible: false
         }
     }
 
@@ -52,6 +54,13 @@ class RootContainer extends Component {
         })
     }
 
+    showError(isShow, message) {
+        this.setState({
+            modalVisible: isShow,
+            message: message
+        })
+    }
+
     render() {
         const menu = <MenuComp toggleSideMenu={this.toggleSideMenu.bind(this)} loginIcon={this.state.loginIcon}
                         loginText={this.state.loginText} renderMenuLogin={this.renderMenuLogin.bind(this)}/>
@@ -67,12 +76,14 @@ class RootContainer extends Component {
                     <NavigationRouter showLoading={this.showLoading.bind(this)}
                                       toggleSideMenu={this.toggleSideMenu.bind(this)}
                                       showBottomMenu={this.showBottomMenu.bind(this)}
-                                      renderMenuLogin={this.renderMenuLogin.bind(this)}/>
+                                      renderMenuLogin={this.renderMenuLogin.bind(this)}
+                                      showError={this.showError.bind(this)}/>
                     <BottomNavigation showBottomMenu={this.showBottomMenu.bind(this)}
                                       visibility={this.state.visibleBottomMenu}
                                       toggleSideMenu={this.toggleSideMenu.bind(this)}/>
                 </SideMenu>
                 <FcmNoti/>
+                <ModalElert modalVisible={this.state.modalVisible} message={this.state.message} showError={this.showError.bind(this)}/>
             </View>
         )
     }

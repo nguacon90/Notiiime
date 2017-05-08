@@ -26,11 +26,6 @@ export default class NotiMeHome extends React.Component {
             });
             this.props.showBottomMenu(true);
             SplashScreen.hide();
-            // vndsService.clientMQTT("1001", "signal", function(message){
-            //    alert(message);
-            // }, function(errMessage){
-            //     console.log(errMessage)
-            // }).start();
             Actions.notime();
         }
 
@@ -48,7 +43,8 @@ export default class NotiMeHome extends React.Component {
                             <Icon iconStyle={styles.iconNoti} name="signal" type="font-awesome"/>
                             <Text style={styles.textNoti}>Notiii.me</Text>
                         </View>
-                        <LoginFacebook renderMenuLogin={this.props.renderMenuLogin.bind(this)}/>
+                        <LoginFacebook renderMenuLogin={this.props.renderMenuLogin.bind(this)}
+                                       showError={this.props.showError.bind(this)}/>
                     </View>
                 </ScrollView>
             </View>

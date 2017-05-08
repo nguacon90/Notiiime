@@ -43,10 +43,12 @@ class NavigationRouter extends Component {
                   <Scene showLoading={this.props.showLoading.bind(this)}
                          showBottomMenu={this.props.showBottomMenu.bind(this)}
                          renderMenuLogin={this.props.renderMenuLogin.bind(this)}
+                         showError={this.props.showError.bind(this)}
                          key='loginScreen' component={LoginScreen} initial
                          title='Đăng nhập' passProps={true} type={ActionConst.REPLACE}/>
 
                   <Scene showLoading={this.props.showLoading.bind(this)}  key='notime'
+                         showError={this.props.showError.bind(this)}
                          component={NotiMe} title="Noti" passProps={true}
                          type={ActionConst.REPLACE}
                          renderRightButton={this.renderAddNotiBtn}/>
@@ -58,6 +60,7 @@ class NavigationRouter extends Component {
 
                   <Scene showLoading={this.props.showLoading.bind(this)}  key='createNotime'
                          component={CreateNotime} title="Noti" passProps={true}
+                         showError={this.props.showError.bind(this)}
                          renderRightButton={this.renderAddNotiBtn}
                          type={ActionConst.REPLACE}/>
               </Scene>
