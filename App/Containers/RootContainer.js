@@ -7,6 +7,7 @@ import BottomNavigation from '../Navigation/BottomNavigation'
 import MenuComp from '../Components/Menu/Menu'
 import styles from './Styles/RootContainerStyles'
 import Colors from '../Themes/Colors'
+import FcmNoti from '../Components/Notime/FcmNoti'
 
 class RootContainer extends Component {
     constructor () {
@@ -71,6 +72,7 @@ class RootContainer extends Component {
                                       visibility={this.state.visibleBottomMenu}
                                       toggleSideMenu={this.toggleSideMenu.bind(this)}/>
                 </SideMenu>
+                <FcmNoti/>
             </View>
         )
     }

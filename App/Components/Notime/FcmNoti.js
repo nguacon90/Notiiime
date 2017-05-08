@@ -14,38 +14,34 @@ export default class FcmNoti extends React.Component {
             console.log('FcmNoti: ' + token)
             // store fcm token in your server
         });
+
         this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
-            // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
-            if(notif.local_notification){
-                //this is a local notification
-                // FCM.presentLocalNotification({
-                //     id: Constants.deviceId,                               // (optional for instant notification)
-                //     title: "Mua ngay mua ngay",                     // as FCM payload
-                //     body: "Giá VND vừa vượt mốc 25",                    // as FCM payload (required)
-                //     sound: "default",                                   // as FCM payload
-                //     priority: "high",                                   // as FCM payload
-                //     click_action: "ACTION",                             // as FCM payload
-                //     badge: 10,                                          // as FCM payload IOS only, set 0 to clear badges
-                //     number: 10,                                         // Android only
-                //     ticker: "My Notification Ticker",                   // Android only
-                //     auto_cancel: true,                                  // Android only (default true)
-                //     large_icon: "ic_launcher",                           // Android only
-                //     icon: "ic_launcher",                                // as FCM payload, you can relace this with custom icon you put in mipmap
-                //     big_text: "Show when notification is expanded",     // Android only
-                //     sub_text: "Chúc bạn đầu tư thành công.",                      // Android only
-                //     color: "red",                                       // Android only
-                //     vibrate: 300,                                       // Android only default: 300, no vibration if you pass null
-                //     tag: 'some_tag',                                    // Android only
-                //     group: "group",                                     // Android only
-                //     my_custom_data:'my_custom_field_value',             // extra data you want to throw
-                //     lights: true,                                       // Android only, LED blinking (default false)
-                //     // show_in_foreground                                  // notification when app is in foreground (local & remote)
-                // });
+            var fcmNoti = notif.fcm;
+            if(fcmNoti) {
+                FCM.presentLocalNotification({
+                    id: Constants.deviceId,                               // (optional for instant notification)
+                    title: fcmNoti.title,                     // as FCM payload
+                    body: fcmNoti.body,                    // as FCM payload (required)
+                    sound: "default",                                   // as FCM payload
+                    priority: "normal",                                   // as FCM payload
+                    click_action: "ACTION",                             // as FCM payload
+                    badge: 10,                                          // as FCM payload IOS only, set 0 to clear badges
+                    number: 10,                                         // Android only
+                    ticker: "Notiiime",
+                    auto_cancel: true,                                  // Android only (default true)
+                    large_icon: "ic_launcher",                           // Android only
+                    icon: "ic_launcher",                                // as FCM payload, you can relace this with custom icon you put in mipmap
+                    big_text: fcmNoti.body,     // Android only
+                    sub_text: "Chúc bạn đầu tư thành công.",                      // Android only
+                    color: "red",                                       // Android only
+                    vibrate: 300,                                       // Android only default: 300, no vibration if you pass null
+                    tag: 'some_tag',                                    // Android only
+                    group: "group",                                     // Android only
+                    my_custom_data:'my_custom_field_value',             // extra data you want to throw
+                    lights: true,                                       // Android only, LED blinking (default false)
+                    // show_in_foreground                                  // notification when app is in foreground (local & remote)
+                });
             }
-            if(notif.opened_from_tray){
-                //app is open/resumed because user clicked banner
-            }
-            // await someAsyncCall();
 
             if(Platform.OS ==='ios'){
                 //optional
@@ -70,96 +66,13 @@ export default class FcmNoti extends React.Component {
             // fcm token may not be available on first load, catch it here
         });
 
-        FCM.presentLocalNotification({
-            id: Constants.deviceId,                               // (optional for instant notification)
-            title: "Mua ngay mua ngay",                     // as FCM payload
-            body: "Giá VND vừa vượt mốc 25",                    // as FCM payload (required)
-            sound: "default",                                   // as FCM payload
-            priority: "high",                                   // as FCM payload
-            click_action: "ACTION",                             // as FCM payload
-            badge: 10,                                          // as FCM payload IOS only, set 0 to clear badges
-            number: 10,                                         // Android only
-            ticker: "My Notification Ticker",                   // Android only
-            auto_cancel: true,                                  // Android only (default true)
-            large_icon: "ic_launcher",                           // Android only
-            icon: "ic_launcher",                                // as FCM payload, you can relace this with custom icon you put in mipmap
-            big_text: "Show when notification is expanded",     // Android only
-            sub_text: "Chúc bạn đầu tư thành công.",                      // Android only
-            color: "red",                                       // Android only
-            vibrate: 300,                                       // Android only default: 300, no vibration if you pass null
-            tag: 'some_tag',                                    // Android only
-            group: "group",                                     // Android only
-            my_custom_data:'my_custom_field_value',             // extra data you want to throw
-            lights: true,                                       // Android only, LED blinking (default false)
-            // show_in_foreground                                  // notification when app is in foreground (local & remote)
-        });
-
-        // FCM.scheduleLocalNotification({
-        //     fire_date: new Date().getTime(),      //RN's converter is used, accept epoch time and whatever that converter supports
-        //     id: Constants.deviceId,    //REQUIRED! this is what you use to lookup and delete notification. In android notification with same ID will override each other
-        //     body: "from future past",
-        //     repeat_interval: "hour" //day, hour
-        // })
     }
 
     componentWillUnmount() {
         // stop listening for events
-        this.notificationListener.remove();
-        this.refreshTokenListener.remove();
+        //this.notificationListener.remove();
+        //this.refreshTokenListener.remove();
     }
-
-    // otherMethods(){
-    //     FCM.subscribeToTopic('/topics/foo-bar');
-    //     FCM.unsubscribeFromTopic('/topics/foo-bar');
-    //     FCM.getInitialNotification().then(notif=>console.log(notif));
-    //     FCM.presentLocalNotification({
-    //         id: "UNIQ_ID_STRING",                               // (optional for instant notification)
-    //         title: "My Notification Title",                     // as FCM payload
-    //         body: "My Notification Message",                    // as FCM payload (required)
-    //         sound: "default",                                   // as FCM payload
-    //         priority: "high",                                   // as FCM payload
-    //         click_action: "ACTION",                             // as FCM payload
-    //         badge: 10,                                          // as FCM payload IOS only, set 0 to clear badges
-    //         number: 10,                                         // Android only
-    //         ticker: "My Notification Ticker",                   // Android only
-    //         auto_cancel: true,                                  // Android only (default true)
-    //         large_icon: "ic_launcher",                           // Android only
-    //         icon: "ic_launcher",                                // as FCM payload, you can relace this with custom icon you put in mipmap
-    //         big_text: "Show when notification is expanded",     // Android only
-    //         sub_text: "Chúc bạn đầu tư thành công.",                      // Android only
-    //         color: "red",                                       // Android only
-    //         vibrate: 300,                                       // Android only default: 300, no vibration if you pass null
-    //         tag: 'some_tag',                                    // Android only
-    //         group: "group",                                     // Android only
-    //         my_custom_data:'my_custom_field_value',             // extra data you want to throw
-    //         lights: true,                                       // Android only, LED blinking (default false)
-    //         show_in_foreground                                  // notification when app is in foreground (local & remote)
-    //     });
-    //
-    //     FCM.scheduleLocalNotification({
-    //         fire_date: new Date().getTime(),      //RN's converter is used, accept epoch time and whatever that converter supports
-    //         id: Constants.deviceId,    //REQUIRED! this is what you use to lookup and delete notification. In android notification with same ID will override each other
-    //         body: "from future past",
-    //         repeat_interval: "week" //day, hour
-    //     })
-    //
-    //     FCM.getScheduledLocalNotifications().then(notif=>console.log(notif));
-    //
-    //     //these clears notification from notification center/tray
-    //     FCM.removeAllDeliveredNotifications()
-    //     FCM.removeDeliveredNotification("UNIQ_ID_STRING")
-    //
-    //     //these removes future local notifications
-    //     FCM.cancelAllLocalNotifications()
-    //     FCM.cancelLocalNotification("UNIQ_ID_STRING")
-    //
-    //     FCM.setBadgeNumber(1);                                       // iOS only and there's no way to set it in Android, yet.
-    //     FCM.getBadgeNumber().then(number=>console.log(number));     // iOS only and there's no way to get it in Android, yet.
-    //     FCM.send(Constants.deviceId, {
-    //         my_custom_data_1: 'my_custom_field_value_1',
-    //         my_custom_data_2: 'my_custom_field_value_2'
-    //     });
-    // }
 
     render() {
         return (
