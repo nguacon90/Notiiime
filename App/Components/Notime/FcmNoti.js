@@ -4,18 +4,66 @@
 import React from "react";
 import FCM, {FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType} from 'react-native-fcm';
 import Constants from '../../Config/Constants'
-import {View, Platform} from 'react-native'
-
+import {View, Platform, AsyncStorage} from 'react-native'
+import vndsService from "../../Services/VndsService";
 
 export default class FcmNoti extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+
+        };
+    }
     componentDidMount() {
+        this.getUserId();
         FCM.requestPermissions(); // for iOS
-        FCM.getFCMToken().then(token => {
-            console.log('FcmNoti: ' + token)
-            // store fcm token in your server
+    }
+
+    syncFcmTokenToServer() {
+        var self = this;
+
+        AsyncStorage.getItem(Constants.fcmTokenKey, (err, fcmTokenKey) => {
+            FCM.getFCMToken().then(token => {
+                if(token != fcmTokenKey) {
+                    vndsService.fcmNotiService().registerToken({
+                        userID: self.state.userId,
+                        fcmKey: token
+                    });
+                    AsyncStorage.setItem(Constants.fcmTokenKey, token);
+                } else {
+                    alert('Do nothing')
+                }
+
+                self.registerNotificationListener();
+            });
         });
 
-        this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
+        FCM.on(FCMEvent.RefreshToken, (token) => {
+            if(self.state.userId) {
+                vndsService.fcmNotiService().registerToken({
+                    userID: self.state.userId,
+                    fcmKey: token
+                })
+            }
+        });
+    }
+
+    getUserId() {
+        var self = this;
+        AsyncStorage.getItem(Constants.accessToken, (err, userInfo) => {
+            if (typeof userInfo === 'string') {
+                var userModel = JSON.parse(userInfo);
+                self.setState({
+                    userId: userModel.userID
+                });
+                self.syncFcmTokenToServer();
+            }
+        });
+
+    }
+
+    registerNotificationListener() {
+        FCM.on(FCMEvent.Notification, async (notif) => {
             var fcmNoti = notif.fcm;
             if(fcmNoti) {
                 FCM.presentLocalNotification({
@@ -61,11 +109,6 @@ export default class FcmNoti extends React.Component {
                 }
             }
         });
-        this.refreshTokenListener = FCM.on(FCMEvent.RefreshToken, (token) => {
-            console.log(token)
-            // fcm token may not be available on first load, catch it here
-        });
-
     }
 
     componentWillUnmount() {

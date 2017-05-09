@@ -15,7 +15,8 @@ class MenuComp extends Component {
         super(props);
         this.state = {
             title: 'Menu',
-            userInfo: null
+            userInfo: null,
+            facebookAvatarUri: null
         }
     }
 
@@ -38,8 +39,9 @@ class MenuComp extends Component {
             var userModel = JSON.parse(userInfo);
             if(userModel.expiredTime >= new Date().getTime()) {
                 this.setState({
-                    title: userModel.name.toUpperCase(),
+                    title: userModel.name,
                     userInfo: userInfo,
+                    facebookAvatarUri: Constants.facebookAvartarUri.replace('{userId}', userModel.userID)
                 });
                 this.props.renderMenuLogin(false);
             }
@@ -62,18 +64,53 @@ class MenuComp extends Component {
     render() {
         return (
             <View style={[MenuStyles.container, MenuStyles.containerMenu]}>
-                <View style={MenuStyles.title}>
-                    <Text style={MenuStyles.username}>{this.state.title}</Text>
-                </View>
-                <List containerStyle={MenuStyles.listContainer}>
+                <View style={MenuStyles.appTitle}><Text style={MenuStyles.textAppName}>{Constants.appName}</Text></View>
+                <List containerStyle={[MenuStyles.listContainer, MenuStyles.firstListContainer]} >
+                    <ListItem containerStyle={[MenuStyles.item, MenuStyles.itemAccount]}
+                              avatar={{uri: this.state.facebookAvatarUri}}
+                              onPress={() => {this.props.toggleSideMenu(); Actions.notime();}}
+                              title={this.state.title} titleStyle={[MenuStyles.itemTitle, {fontWeight: 'bold'}]}
+                    />
                     <ListItem containerStyle={MenuStyles.item}
-                              leftIcon={{name:'bell-o', type:"font-awesome", size: 20, color: Colors.defaultText}}
-                        onPress={() => {this.props.toggleSideMenu(); Actions.notime();}}
-                        title="Notiii me" titleStyle={MenuStyles.itemTitle}
+                              leftIcon={{name:'signal', type:"font-awesome", size: Constants.sizeIcon, color: Colors.defaultText}}
+                              onPress={() => {this.props.toggleSideMenu(); Actions.notime();}}
+                              title={Constants.menu.noti} titleStyle={MenuStyles.itemTitle}
                     />
 
                     <ListItem containerStyle={MenuStyles.item}
-                              leftIcon={{name: this.props.loginIcon, type:"font-awesome", size: 20, color: Colors.defaultText}}
+                              leftIcon={{name:'eye', type:"font-awesome", size: Constants.sizeIcon, color: Colors.defaultText}}
+                              onPress={() => {this.props.toggleSideMenu();}}
+                              title={Constants.menu.watchList} titleStyle={MenuStyles.itemTitle}
+                    />
+                    <ListItem containerStyle={MenuStyles.item}
+                              leftIcon={{name:'sliders', type:"font-awesome", size: Constants.sizeIcon, color: Colors.defaultText}}
+                              onPress={() => {this.props.toggleSideMenu();}}
+                              title={Constants.menu.screener} titleStyle={MenuStyles.itemTitle}
+                    />
+                    <ListItem containerStyle={MenuStyles.item}
+                              leftIcon={{name:'save', type:"font-awesome", size: Constants.sizeIcon, color: Colors.defaultText}}
+                              onPress={() => {this.props.toggleSideMenu();}}
+                              title={Constants.menu.template} titleStyle={MenuStyles.itemTitle}
+                    />
+                </List>
+                <List containerStyle={MenuStyles.listContainer}>
+                    <ListItem containerStyle={MenuStyles.item}
+                              leftIcon={{name:'star-o', type:"font-awesome", size: Constants.sizeIcon, color: Colors.defaultText}}
+                              onPress={() => {this.props.toggleSideMenu();}}
+                              title={Constants.menu.rating} titleStyle={MenuStyles.itemTitle}
+                    />
+                    <ListItem containerStyle={MenuStyles.item}
+                              leftIcon={{name:'comments-o', type:"font-awesome", size: Constants.sizeIcon, color: Colors.defaultText}}
+                              onPress={() => {this.props.toggleSideMenu();}}
+                              title={Constants.menu.feedback} titleStyle={MenuStyles.itemTitle}
+                    />
+                    <ListItem containerStyle={MenuStyles.item}
+                              leftIcon={{name:'share-alt', type:"font-awesome", size: Constants.sizeIcon, color: Colors.defaultText}}
+                              onPress={() => {this.props.toggleSideMenu();}}
+                              title={Constants.menu.inviteFriends} titleStyle={MenuStyles.itemTitle}
+                    />
+                    <ListItem containerStyle={MenuStyles.item}
+                              leftIcon={{name: this.props.loginIcon, type:"font-awesome", size: Constants.sizeIcon, color: Colors.defaultText}}
                               onPress={() => {this.doLoginOrLogout()}}
                               title={this.props.loginText} titleStyle={MenuStyles.itemTitle}
                     />

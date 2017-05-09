@@ -31,7 +31,7 @@ const metrics = {
       small: 20,
       normal: 30,
       medium: 40,
-      large: 50
+      large: 50,
   },
   icons: {
     tiny: 15,

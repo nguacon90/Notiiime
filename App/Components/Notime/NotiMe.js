@@ -9,6 +9,7 @@ import Constants from "../../Config/Constants";
 import styles from '../../Containers/Styles/LaunchScreenStyles'
 import StockNoti from './StockNoti'
 import vndService from '../../Services/VndsService'
+import FcmNoti from '../../Components/Notime/FcmNoti'
 
 export default class NotiMe extends React.Component {
     constructor(props) {
@@ -93,6 +94,7 @@ export default class NotiMe extends React.Component {
                             </Tabs>
                         </View>
                     </ScrollView>
+                    <FcmNoti/>
                 </View>
                 )
             }

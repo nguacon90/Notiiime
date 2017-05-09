@@ -272,13 +272,34 @@ const clientMQTT = (clientId, signal, callbackSuccess, callbackError) => {
     }
 }
 
+const fcmNotiService = (baseURL = Constants.fcmNotiServer) => {
+    const api = apisauce.create({
+        baseURL,
+        headers: {
+            'Cache-Control': 'no-cache'
+        },
+        timeout: 30000
+    })
+    if (__DEV__ && console.tron) {
+        api.addMonitor(console.tron.apisauce)
+    }
 
+    const registerToken = (fcmToken) => {
+        var path = "users/{userId}/fcm".replace('{userId}', fcmToken.userId);
+        return api.post(path, fcmToken);
+    }
+
+    return {
+        registerToken
+    }
+}
 
 // let's return back our create method as the default.
 export default {
     finfoService,
     priceService,
     notiService,
+    fcmNotiService,
     messageUnmashaller,
     clientMQTT
 }

@@ -1,12 +1,16 @@
 import DeviceInfo from 'react-native-device-info'
 
 export default Constants = {
+    sizeIcon: 15,
+    appName: 'Notiii.me',
     loginMethods: {
         facebook: "facebook",
         google: "google"
     },
+    facebookAvartarUri: 'https://graph.facebook.com/{userId}/picture?type=large',
     accessToken: 'AccessToken',
-    // notiiServer: 'http://notiii.com',
+    fcmTokenKey: 'fcmTokenKey',
+    fcmNotiServer: 'http://notiii.com',
     notiiServer: 'http://notiii.com:8080/',
     priceServer: 'https://price-hn04.vndirect.com.vn/priceservice/',
     finfoServer: 'https://finfoapi-hn.vndirect.com.vn/',
@@ -21,6 +25,9 @@ export default Constants = {
     MARelations: [{
         label: 'Cắt lên',
         value: 'CT'
+    },{
+        label: 'Cắt Xuống',
+        value: 'CX'
     }],
     operators: {
         'LTEQ': '<=',
@@ -37,7 +44,7 @@ export default Constants = {
         },
         accumulatedVol: {
             key: 'accumulatedVol',
-            label: 'Khối lượng AAA '
+            label: 'Khối lượng'
         },
         MA20: {
             key: 'MA20',
@@ -71,5 +78,15 @@ export default Constants = {
         'STOCK': 'STOCK',
         'LOGIC': 'LOGIC'
     },
-    UNIT: 10
+    UNIT: 10,
+
+    menu: {
+        noti: 'Notiii',
+        watchList: 'Watchlist',
+        screener: 'Lọc mã',
+        template: 'Template',
+        rating: 'Đánh giá',
+        feedback: 'Góp ý',
+        inviteFriends: 'Mời bạn bè'
+    }
 }

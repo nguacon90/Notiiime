@@ -38,8 +38,6 @@ export default class NotiMe extends React.Component {
             stocks: [],
             data: [],
             isShowAutoComplete: false,
-            modalVisible: false,
-
         };
 
         this.setValue = (value, index) => {
@@ -241,21 +239,18 @@ export default class NotiMe extends React.Component {
             frequencyOfReceipt: 3
         };
 
-        console.log(notiiData);
 
         vndsService.notiService().register(notiiData).then((res) => {
             self.props.showLoading(false);
             if(res.ok) {
                 Actions.notime();
             } else {
-                alert(res.problem);
+                self.props.showError(true, (res.problem));
             }
         })
         .catch((err) =>{
             self.props.showLoading(false);
-            this.setState({
-                modalVisible: true
-            });
+            self.props.showError(true, err);
         })
     }
 
@@ -289,10 +284,7 @@ export default class NotiMe extends React.Component {
                         selectedValue={this.state.terms[index].value}
                         itemStyle={[styles.pickerItem]} mode="dropdown"
                         onValueChange={this.onValueChange.bind(this, 'value', index)}>
-                    <Item label={Constants.conditions.MA20.label} value={Constants.conditions.MA20.key} />
-                    <Item label={Constants.conditions.MA50.label} value={Constants.conditions.MA50.key} />
-                    <Item label={Constants.conditions.MA100.label} value={Constants.conditions.MA100.key} />
-                    {/*{this.renderMAOptions(index)}*/}
+                    {this.renderMAOptions(index)}
                 </Picker>
             )
         }
@@ -371,9 +363,13 @@ export default class NotiMe extends React.Component {
     renderPercent() {
         if(typeof this.state.basicPrice != 'undefined' && this.state.basicPrice != 0) {
             var percent = (this.state.matchPrice - this.state.basicPrice) * 100 / this.state.basicPrice;
+            var sign = '';
+            if(percent > 0) {
+                sign = '+';
+            }
             return (
                 <Text>
-                    <FormattedNumber value={percent} minimumFractionDigits={2} maximumFractionDigits={2} />{"%"}
+                    {"("}{sign}<FormattedNumber value={percent} minimumFractionDigits={1} maximumFractionDigits={1} />{"%)"}
                 </Text>
             )
         }
@@ -409,10 +405,10 @@ export default class NotiMe extends React.Component {
                 <ScrollView style={[styles.container, styles.scrollViewContainer]}>
                     <View style={styles.section} >
                         <Grid containerStyle={styles.gridContainer}>
-                            <Row containerStyle={{marginLeft:0, justifyContent: 'flex-start'}}>
+                            <Row containerStyle={{marginLeft:0, justifyContent: 'flex-start', flexDirection: 'row'}}>
                                 <Col containerStyle={{width: 130}}>
                                     <FormInput containerStyle={{marginRight: 0, marginLeft: 0}}
-                                               inputStyle={[styles.formInput, {flex: 1, alignItems: 'flex-start', width: 80,
+                                               inputStyle={[styles.formInput, {flex: 1, alignItems: 'center', flexDirection: 'row', width: 80,
                                         fontSize: 18, color: Colors.defaultText, fontWeight: 'bold'}]}
                                                value={this.state.symbol}
                                                ref="symbol"
@@ -420,18 +416,18 @@ export default class NotiMe extends React.Component {
                                                onChangeText={(text)=> {this.autocomplete(text)}}
                                                onBlur={()=>{this.handleSelectedSymbol()}}
                                                onFocus={()=>{this.setState({isShowAutoComplete: true})}}
-                                               placeholder="Mã CK" placeholderTextColor="#78B1AA">
+                                               placeholder="Mã CK" placeholderTextColor="#CCCCCC">
                                     </FormInput>
                                 </Col>
-                                <Col containerStyle={{flex: 1, alignItems: 'flex-end', flexDirection: 'row'}}>
+                                <Col containerStyle={{flex: 1, alignItems: 'center', flexDirection: 'row'}}>
                                     <View style={{flex: 1, alignItems: 'flex-end'}}>
-                                        <Text style={{color: this.state.priceColor, fontSize: Fonts.size.h6}}>{this.state.matchPrice}</Text>
+                                        <Text style={{color: this.state.priceColor, fontSize: Fonts.size.label}}>{this.state.matchPrice}</Text>
                                     </View>
                                     <View style={{marginLeft: Metrics.baseMargin}}>
                                         <Text style={{color: this.state.priceColor, fontSize: Fonts.size.medium}}>{percent}</Text>
                                     </View>
-                                    <View style={{marginLeft: Metrics.baseMargin}}>
-                                        <Text style={{color: Colors.gray, fontSize: Fonts.size.h6}}>{volumn}</Text>
+                                    <View style={{marginLeft: Metrics.doubleSection}}>
+                                        <Text style={{color: Colors.gray, fontSize: Fonts.size.label}}>{volumn}</Text>
                                     </View>
                                 </Col>
                             </Row>
@@ -475,15 +471,20 @@ export default class NotiMe extends React.Component {
                             </Row>
 
                             <Row containerStyle={styles.rowContainer}>
-                                <Col containerStyle={{width: 90}}><FormLabel labelStyle={[styles.labelSmall, {width: 90}]}>Ghi chú: </FormLabel></Col>
+                                <Col containerStyle={{width: 90}}>
+                                    <FormLabel labelStyle={[styles.labelSmall, {width: 90}]}>Ghi chú: </FormLabel>
+                                </Col>
                                 <Col containerStyle={styles.containerSelect}>
                                     <FormInput inputStyle={[styles.formInput, {width: Metrics.screenWidth}]}
-                                               onChangeText={(text)=> {this.setState({note: text})}} placeholderTextColor="#78B1AA"/>
+                                               onChangeText={(text)=> {this.setState({note: text})}}
+                                               placeholderTextColor="#CCCCCC" placeholder="Mua / Bán"/>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col containerStyle={{alignItems: 'center'}}>
-                                    <Button buttonStyle={{width: Metrics.halfscreenWidth, marginTop: 20}} backgroundColor="#18BA9C" borderRadius={5} title='Tạo Noti'
+                                    <Button buttonStyle={{width: Metrics.halfscreenWidth, marginTop: 20}}
+                                            fontSize={Fonts.size.label}
+                                            backgroundColor="#18BA9C" borderRadius={5} title='Tạo Noti'
                                             onPress={() => {this.createNotiiime()}} />
                                 </Col>
                             </Row>

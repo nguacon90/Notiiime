@@ -5,6 +5,7 @@ import {Icon} from 'react-native-elements'
 import styles from './Styles/NavigationContainerStyles'
 import Colors from '../Themes/Colors'
 import {Actions} from 'react-native-router-flux'
+import Constants from '../Config/Constants'
 
 class BottomNavigation extends Component {
     constructor(props) {
@@ -49,16 +50,16 @@ class BottomNavigation extends Component {
                 <Tabs selected={this.state.page} style={styles.bottomMenu}
                       selectedStyle={{}} onSelect={el=> {this.onSelectedTab(el)}}>
                     <View name="noti">
-                        <Icon containerStyle={{}} color={this.state.noti} name='signal' type="font-awesome"></Icon>
-                        <Text style={{color: this.state.noti}}>Notiii me</Text>
+                        <Icon size={Constants.sizeIcon} containerStyle={{}} color={this.state.noti} name='signal' type="font-awesome"></Icon>
+                        <Text style={{color: this.state.noti}}>{Constants.menu.noti}</Text>
                     </View>
                     <View name="watchlist">
-                        <Icon containerStyle={{}} color={this.state.watchlist} name='eye'  type="font-awesome"></Icon>
-                        <Text style={{color: this.state.watchlist}}>Watch list</Text>
+                        <Icon size={Constants.sizeIcon} containerStyle={{}} color={this.state.watchlist} name='eye'  type="font-awesome"></Icon>
+                        <Text style={{color: this.state.watchlist}}>{Constants.menu.watchList}</Text>
                     </View>
                     <View name="screener">
-                        <Icon containerStyle={{}} color={this.state.screener} name='filter'  type="font-awesome"></Icon>
-                        <Text style={{color: this.state.screener}}>Lọc Cổ Phiếu</Text>
+                        <Icon size={Constants.sizeIcon} containerStyle={{}} color={this.state.screener} name='sliders'  type="font-awesome"></Icon>
+                        <Text style={{color: this.state.screener}}>{Constants.menu.screener}</Text>
                     </View>
                 </Tabs>
             )
